@@ -1,0 +1,33 @@
+{% include 'header.html' %}
+{% include 'navi.html' %}
+<div class="box">
+
+{% include 'forum/postform.html' %}
+
+{% if comments %}
+<hr>
+	{% for row in comments %}
+	<div class="comment">
+		<div class="mute">
+			{{row.user}} @ {{row.timestamp|date('d/M/y')}}
+			{% if row.report != '0' %}
+			to <a href="{{REL_URL}}id/{{row.report}}" class="">[report]</a>			
+			{% endif %}
+			{% if row.parent == '0' and not parent %}
+			(replies: {{row.replies}}) <a href="{{REL_URL}}forum/thread/{{attribute(row, '_id')}}" class="">[view]</a>
+			{% endif %}
+		</div>
+		<div>{{row.text}}</div>
+	</div>
+	{% endfor %}
+{% endif %}
+</div>
+
+{% if pagination %}
+<div class="center footer">
+    {% autoescape false %}
+        {{ pagination }}
+    {% endautoescape %}
+</div>
+{% endif %}
+{% include 'footer.html' %}

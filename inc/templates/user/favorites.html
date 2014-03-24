@@ -1,0 +1,11 @@
+{% include 'header.html' %}
+{% include 'navi.html' %}
+<div class="box">
+    <p>{{ user }}'s choice:</p>
+    {% for fav in favs %}
+    <p>
+    <a class="btn" href="{{REL_URL}}id/{{ fav }}">{{ fav }}</a>
+        </p>
+    {% endfor %}
+</div>
+{% include 'footer.html' %}

@@ -1,0 +1,79 @@
+{% include 'header.html' %}
+{% include 'navi.html' %}
+
+{% if search_url_query and session.logged_in == "true" and session.api_key == "true" %}
+<div class="center">
+    <a class="btn small" href="{{ REL_URL }}api/iplist?q={{ search_url_query }}">raw ip list</a>
+    <a class="btn small" href="{{ REL_URL }}rss/search?q={{ search_url_query }}">RSS</a>
+    <a class="btn small" href="{{ REL_URL }}api/xml_export?q={{ search_url_query }}">export XML</a>
+</div>
+{% endif %}
+
+<div class="big mute center">{{ total_results }} reports</div>
+
+{% for row in results %}
+<div class="report-row box" id="{{ attribute(row, '_id')}}">
+    <div class="report-header">
+        <span>
+            {% if row.report.address %}
+                <span class="ip-search">{{ row.report.address }}</span>
+            {% endif %}
+            {% if row.report.hostname %}
+                <span class="small mute">{{ row.report.hostname }}</span>
+            {% endif %}
+        </span>
+        <span class="item-link">
+            {% if session.logged_in %}
+                <span title="{{ attribute(row, '_id')}}" class="btn btn-fav"></span>
+            {% endif %}
+            <a target="_blank" href="{{ REL_URL }}id/{{ attribute(row, '_id')}}" class="btn">view</a>
+        </span>
+    </div>
+    <div class="small mute">
+        {% if row.report.geoip %} 
+            <div > 
+                <img class="flag" src="{{ REL_URL }}images/png/{{ row.report.geoip.country|lower }}.png" title="{{ row.report.geoip.country }}">
+            </div>
+        {% endif %}
+        <div>Added at {{ row.timestamp|date('d/M/Y') }} by {{ row.user }}. Rating: <span class="rating">{{ row.rate }}</span>.</div>
+    </div>
+    <div class="report-tags">
+        {% if row.tags %}
+            {% for tag in row.tags %}
+                <span class="tag small">{{ tag }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="report-ports">
+        {% if row.report.ports %}
+            {% for port in row.report.ports %}
+                {% if port.state == "open" %}
+                    {% if port.service.name == "ftp" %}
+                    <a href="{{ port.service.name}}://{{row.report.address}}:{{port.portid}}">
+                        <span class="port small port-open-link">{{ port.service.name }} ({{ port.portid }})</span>
+                    </a>    
+                    {% elseif port.service.name == "http" or port.service.name == "http-alt"%}
+                    <span class="safe-link" title="http://{{row.report.address}}:{{port.portid}}">
+                        <span class="port small port-open-link">{{ port.service.name }} ({{ port.portid }})</span>
+                    </span>    
+                    {% elseif port.service.name == "https" or port.service.name == "https-alt"%}
+                    <span class="safe-link" title="https://{{row.report.address}}:{{port.portid}}">
+                        <span class="port small port-open-link">{{ port.service.name }} ({{ port.portid }})</span>
+                    </span>    
+                    {% else %}
+                        <span class="port small port-open">{{ port.service.name }} ({{ port.portid }})</span>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+<div class="center footer">
+    {% autoescape false %}
+        {{ pagination }}
+    {% endautoescape %}
+</div>
+
+{% include 'footer.html' %}
+

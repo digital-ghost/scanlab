@@ -1,0 +1,208 @@
+{% include 'header.html' %}
+{% include 'navi.html' %}
+<div class="box report-box" id="{{ attribute(result, '_id')}}">
+    {# General INFO about host #}
+    <div>
+        <div>
+            <span class="big">{{ host.address.attributes.addr }}</span>
+            {% if result.tags %}
+                {% for tag in result.tags %}
+                    <span >[{{tag}}]</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <hr>
+        {% if host.hostnames.hostname %}
+            <div class="small">
+                {% for hostname in host.hostnames.hostname %}
+                    {{ hostname.attributes.name }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if host.os %}
+            <div class="small">
+                OS:
+                {% if host.os.osmatch %}
+                    {% for os in host.os.osmatch %}
+                        {{ os.attributes.name }} ({{ os.attributes.accuracy }}%). 
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endif %}
+        {% if host.distance %}
+            <div class="small">Distance: {{ host.distance.attributes.value }} hops</div>
+        {% endif %}
+        {% if host.uptime %}
+            <div class="small">Last boot: {{ host.uptime.attributes.lastboot }}</div>
+        {% endif %}
+        <div class="mute">
+            <span class="item-link">
+                {% if session.logged_in %}
+                    <span title="{{ attribute(result, '_id')}}" class="btn btn-fav"></span>
+                {% endif %}
+                {% if session.api_key == "true" %}
+                    <a href="{{REL_URL}}api/xml_id?id={{ attribute(result, '_id')}}" class="btn">get XML</a>
+                {% endif %}
+                <span class="btn" id="toggle-scripts">toggle scripts</span>
+            </span>
+            <p>
+                <img class="flag" src="{{ REL_URL }}images/png/{{ result.report.geoip.country|lower }}.png" title="{{ result.report.geoip.country|lower }}">
+            </p>
+            <p>Added at {{ result.timestamp|date('d/M/Y')}} by {{ result.user }}.
+            Rating: <span class="rating">{{ result.rate }}</span>.</p>
+
+        </div>
+
+    </div>
+
+    {# If open ports: #}
+
+    {% if host.ports.port %}
+        <div class="">
+                    <table class="table small">
+                        <tr class="table-row-header">
+                            <th>Port</th>
+                            <th>State</th>
+                            <th>Service</th>
+                            <th>Version</th>
+                        </tr>
+
+        {% for port in host.ports.port %}
+            {% if port.state.attributes.state %}
+                <tr class="table-row-{{ port.state.attributes.state }}">
+                    <td>
+                        <span class="port port-{{ port.state.attributes.state }}">{{ port.attributes.portid }}/{{ port.attributes.protocol }}</span>
+                    </td> 
+                    <td>{{ port.state.attributes.state }}</td>
+                            <td>
+                                {% if port.service.attributes.name == 'ftp'%}
+                                <a href="{{ port.service.attributes.name }}://{{ host.address.attributes.addr }}:{{ port.attributes.portid }}" class="safe-link-style">
+                                    {{ port.service.attributes.name }}
+                                </a>
+                                {% elseif port.service.attributes.name == 'http'
+                                    or port.service.attributes.name == 'http-alt' %}
+                                <span title="http://{{ host.address.attributes.addr }}:{{ port.attributes.portid }}" class="safe-link safe-link-style">
+                                    {{ port.service.attributes.name }}
+                                </span>
+                                {% elseif port.service.attributes.name == 'https'
+                                    or port.service.attributes.name == 'https-alt' %}
+                                <span title="https://{{ host.address.attributes.addr }}:{{ port.attributes.portid }}" class="safe-link safe-link-style">
+                                    {{ port.service.attributes.name }}
+                                </span>
+                                {% else %}
+                                    {{ port.service.attributes.name }}
+                                {% endif %}
+                            </td>
+
+                            <td>
+                        {% if port.service.attributes.product %}
+                            {{ port.service.attributes.product }} 
+                        {% endif %}
+                        {% if port.service.attributes.version %}
+                            version <b>{{ port.service.attributes.version }}</b> 
+                        {% endif %}
+                            </td>
+                        </tr>
+                        {% if port.script %}
+                        <tr class="table-row-open">
+                            <td colspan="4" >
+                                {% for script in port.script %}
+                                    {% if script.attributes %}
+                                        <div class="script-box">
+                                            <b>{{ script.attributes.id }}</b>:
+                                            <pre class="hidden">{{ script.attributes.output }}</pre>
+                                        </div>
+                                    {% else %}
+                                        <div class="script-box">
+                                            <b>{{ script.id }}</b>:
+                                            <pre class="hidden">{{ script.output }}</pre>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% endif %}
+                {% endif %}
+            {% endfor %}
+                    </table>
+
+        {% if host.hostscript %}
+            {% for script in host.hostscript.script %}
+                {% if script.attributes %}
+                    <div class="script-box">
+                        <b>{{ script.attributes.id }}</b>:
+                        <pre class="hidden">{{ script.attributes.output }}</pre>
+                    </div>
+                {% else %}
+                    <div class="script-box">
+                        <b>{{ script.id }}</b>:
+                        <pre class="hidden">{{ script.output }}</pre>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        {# If extra ports: #}
+        {% if host.ports.extraports %}
+            {% for extraport in host.ports.extraports %}
+                {% if extraport.state == 'closed' %}
+                    <p class="text-error">Closed ports: {{ extraport.count }}</p>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        </div>
+
+    {% endif %}
+
+    {% if host.trace %}
+<div class="box">
+        <div class="big">Traceroute</div>
+            <table class="table small">
+                <tr class="table-row-header">
+                    <th>Hop</th>
+                    <th>Time</th>
+                    <th>Host</th>
+                </tr>
+
+                {% for hop in host.trace.hop %}
+                <tr>
+                    <td>{{ hop.attributes.ttl }}</td>
+                    <td>{{ hop.attributes.rtt }}</td>
+                    <td>
+                        {% if hop.attributes.host %}
+                            {{ hop.attributes.host }}
+                        {% else %} 
+                            {{ hop.attributes.ipaddr }}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+       
+</div>
+    {% endif %}
+</div>
+
+<div class="box small">
+{% if comments.count != "0" %}
+{% for message in comments %}
+<div class="comment">
+        <div class="mute">
+            {{message.user}} @ {{message.timestamp|date('d/M/y')}}
+            {% if message.parent == '0' and not parent %}
+            (replies: {{message.replies}}) <a href="{{REL_URL}}forum/thread/{{attribute(message, '_id')}}" class="">[view]</a>
+            {% endif %}
+        </div>
+        <div>{{message.text}}</div>
+</div>
+{% endfor %}
+
+{% else %}
+{% include 'forum/postform.html' %}
+{% endif %}
+</div>
+
+
+{% include 'footer.html' %}
+

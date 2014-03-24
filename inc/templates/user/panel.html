@@ -1,0 +1,92 @@
+{% include 'header.html' %}
+{% include 'navi.html' %}
+<div class="box">
+    <div class="center">
+    <p>
+        <a class="btn" href='{{REL_URL}}user/favs'>
+            <img class="like-icon" src="{{REL_URL}}images/icons/like.png">
+            Favorites
+        </a>
+        <a href="mailto:{{ADMIN_EMAIL}}" class="btn">Contact admin</a>
+    {% if user.username == ROOT_USER %}
+        <a href="{{REL_URL}}root" class="btn">Root panel</a>
+    {% endif %}
+    </p>
+    {% if user.api_key != "1" %}
+    <p>API usage is <b>disabled</b></p>
+    {% else %}
+    <p>API usage is <b>enabled</b></p>
+    <hr>
+    <p>You can have <b>maximum {{user.account_limit}}</b> reports for now. <b>Currently {{user.reports_count}}</b> reports from you in database.</p>
+    <p>
+        <a class="btn" href='{{REL_URL}}search?q=user:{{user.username}}'>Search in your reports</a>
+    </p>
+    {% endif %}
+    </p>
+</div>
+</div>
+
+{% if user.api_key == 1 %}
+<div class="box">
+    <p>
+        <div class="center">
+            <a class="btn btn-green big" href="{{REL_URL}}clients/client.tgz">Download client</a>
+        </div>
+        <div class="script-box">
+            <div class="center"><b >Client usage</b></div>
+            <div class="hidden">
+                <h1>Установка.</h1>
+                Чтобы запустить клиент, вам нужен интерпретатор python и некоторые пакеты. 
+                Инструкции написаны для Debian и Ubuntu.
+                Установить все зависимости одной командой можно так (выполнять от рута):
+                <pre>apt-get install -y python nmap python-pip geoip-database &amp;&amp; pip install pygeoip sleekxmpp PySocks</pre>
+
+                <h1>Работа с клиентом:</h1>
+
+                Для начала, вам необходимо настроить сам клиент.
+                Отредактируйте под себя и сохраните файл config.py.<br>
+
+                Чтобы загрузить в базу отчёт nmap в формате xml:
+                <pre>python scanlab_cli.py -f file.xml</pre>
+
+                Режим удалённого клиента. Клиент так можно запустить один раз,
+                далее он будет автоматически получать цели, которые вы введете в панели управления.
+                Эти цели он будет сканировать и загружать на сервер.
+                <pre>python scanlab_cli.py --remote</pre>
+
+                Чтобы просканировать одну цель и загрузить результат на сервер:
+                <pre>python scanlab_cli.py -t 192.168.1.0/24</pre>
+
+                Просканировать список целей из файла (как -iL в nmap):
+                <pre>python scanlab_cli.py -l targets.txt</pre>
+
+                Сгенерировать список случайных IP для сканирования. Аргумент - количество IP.
+                В той же папке создаётся файл с IP targets.txt.
+                Работает только в никсах.
+                <pre>python scanlab_cli.py --random=10000</pre>
+
+                Сгенерировать список случайных доменов. В той же папке создаётся файл с доменами domains.txt.
+                Аргумент - домен верхнего уровня. Использовать с опцией --domain-length, которая укажет длинну
+                генерируемых доменов.
+                Например, если хочешь сгенерировать все домены ru длинной в 4 символа:
+                <pre>python scanlab_cli.py --domain=ru --domain-length=4</pre>
+            </div>
+        </div>
+    </p>
+</div>
+<div class="box">
+    <div class="center">
+        <a class="btn " id="open-targets">open targets list</a>
+    </div>
+    <div id="target-form">
+        <form action="{{REL_URL}}user/add_targets" method="POST" class="scanlab-form">
+            <fieldset>
+                <legend>This should be nmap compatible target list. Watch <b>man nmap</b> for more.</legend>
+                <textarea name="targets" class="scanlab-textarea">{{user.targets}}</textarea>
+                <input type="submit" class="btn" value="Save targets">
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% endif %}
+{% include 'footer.html' %}

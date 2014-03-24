@@ -1,0 +1,24 @@
+<div class="search-form">
+    <form action="{{ REL_URL }}search" method="GET" class="">
+        {% if search_query %}
+            {% set val = search_query %}
+        {% else %}
+            {% set val = "" %}
+        {% endif %}
+        <input type="text" name="q" class="scanlab-input search-input" placeholder="type something here..." value="{{ val }}">
+        <input type="submit" value="" class="search-btn">
+    </form>
+    <div class="help">
+        <div id="toggle-help">search syntax</div>
+        <div id="help">
+            <p><b>apache nginx</b> - find all records with words <b>apache</b> and <b>nginx</b> (search in xml).</p>
+            <p><b>"Netwave IP Camera"</b> - find exact phrase <b>Netwave IP Camera</b> in xml.</p>
+            <p><b>-apache "-Test page"</b> - no not include documents with <b>apache</b> and <b>Test page</b> in xml.</p>
+            <p><b>port:21,8080</b> - find all records with open ports <b>21</b> and <b>8080</b>.</p>
+            <p><b>service:http,ftp</b> - find all records with open <b>http</b> and <b>ftp</b> services.</p>
+            <p><b>country:US,CN</b> - find all records from <b>United States</b> and <b>China</b>.</p>
+            <p><b>tag:camera,linux</b> - find all records with tags <b>camera</b> and <b>linux</b></p>
+            <p><b>rated:yes</b> or <b>rated:no</b> - find only rated or unrated records</p>
+       </div>
+    </div>
+</div>

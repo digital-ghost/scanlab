@@ -1,0 +1,71 @@
+{% include 'header.html' %}
+{% include 'navi.html' %}
+
+<div style="padding: 10px; ">
+    <a class="btn big" href="{{ REL_URL }}overview/services">Services</a>
+    <a class="btn big" href="{{ REL_URL }}overview/ports">Ports</a>
+    <a class="btn big" href="{{ REL_URL }}overview/countries">Countries</a>
+    <a class="btn big" href="{{ REL_URL }}overview/tags">Tags</a>
+</div>
+{% if not countries and not users and not services and not ports and not tags %}
+<div class="box ">
+    <h1 class="center">Select mode</h1>
+    <div class="center">
+        <img class="center" style="box-shadow: 0px 0px 15px #000; border-radius: 10px;" src="{{REL_URL}}images/network.jpg">
+    </div>
+</div>
+{% endif %}
+
+{% if services %} 
+<div class="box">
+    <h1 class="center">Services:</h1>
+    <div>
+        {% for service in services %}
+        <a class="btn small btn-yellow" href="{{ REL_URL }}search?q=service:{{ service.name }}">
+            <b>{{ service.name }} ({{ service.count }})</b>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if ports %}
+<div class="box">
+    <h1 class="center">Ports:</h1>
+    <div>
+        {% for port in ports %}
+        <a class="btn small btn-green" href="{{ REL_URL }}search?q=port:{{ port.name }}">
+            <b>{{ port.name }} ({{ port.count }})</b>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if countries %}
+<div class="box">
+    <h1 class="center">Countries:</h1>
+    <div>
+        {% for country in countries %}
+        <a class="btn small" href="{{ REL_URL }}search?q=country:{{country.name}}">
+            <img class="flag" src="{{ REL_URL }}images/png/{{ country.name|lower }}.png" title="{{ country.name }}"> ({{country.count}})
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if tags %}
+<div class="box">
+    <h1 class="center">Tags:</h1>
+    <div>
+        {% for tag in tags %}
+        <a class="btn small btn-blue" href="{{ REL_URL }}search?q=tag:{{ tag.name }}">
+            <b>{{ tag.name }} ({{tag.count}})</b>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% include 'footer.html' %}

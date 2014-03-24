@@ -1,0 +1,23 @@
+{% include "header.html" %}
+{% include "navi.html" %}
+
+<div class="box">
+    <form class="scanlab-form" action="{{ REL_URL }}auth/register" method="POST">
+        <fieldset>
+            <legend>Registration</legend>
+            <p>
+                Регистрация позволит тебе сохранять отдельные отчеты в избранном. 
+                Можешь также получить возможность загружать отчеты в базу, для этого, сообщи о своем желании администратору базы.
+                Неактивные и мусорские аккаунты могут быть отключены, не стоит регистрироваться просто так.
+            </p>
+            <input type="text" class="scanlab-input" name="username" placeholder="username">
+            <input type="password" class="scanlab-input" name="password" placeholder="password">
+            <input type="text" class="scanlab-input" name="captcha" placeholder="captcha">
+            <img src="{{REL_URL}}statique/captcha">
+            <input type="submit" class="btn btn-green" value="Register">
+        </fieldset>
+    </form>
+</div>
+
+{% include "footer.html" %}
+

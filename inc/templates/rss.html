@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<rss version="2.0">
+    <channel>
+    	<title>Scanlab RSS - {{ description }}</title> 
+    	<link>{{ protocol }}://{{ server_name }}{{ REL_URL }}</link> 
+    	<description>Scanlab RSS - {{ description }}</description>
+    	{% for row in results %}
+    	<item>
+    		<title>{{ row.report.address }}, {{row.report.geoip.country}}</title>
+            <link>{{ protocol }}://{{ server_name }}{{ REL_URL }}id/{{ attribute(row, '_id')}}</link>
+            <description>{{ row.report.address }} {% for tag in row.tags %} [{{tag}}]{% endfor %}</description>
+            <pubDate>{{ row.timestamp|date("c")}}</pubDate>
+		</item>
+       {% endfor %}
+    </channel>
+</rss> 

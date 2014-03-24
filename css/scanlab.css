@@ -1,0 +1,399 @@
+html, body {
+    font-size: 14px;
+    color: #ddd;
+    margin: 0px;
+    background-color: #222;
+    word-wrap: break-word;
+    text-align: center;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+a {
+    color: #111;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #222;
+}
+
+a:visited {
+    color: #333;
+}
+
+.container {
+    background-color: #2B2F34;
+    min-width: 600px;
+    max-width: 940px;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    box-shadow: 0 0 10px 10px #000;
+}
+
+.small {
+    font-size: 75%;
+}
+
+.big {
+    font-size: 125%;
+}
+
+.mute {
+    color: gray;
+}
+
+.center {
+    text-align: center;
+}
+
+.box {
+    padding: 20px;
+    margin: 20px;
+    border: 1px #111 solid;
+    background-color: #202328;
+    text-align: left;
+}
+
+.box-hl {
+    box-shadow: 0 0 3px 3px #069;
+}
+
+.hidden {
+    display: none;
+}
+
+.scanlab-input, .scanlab-textarea {
+    padding: 7px;
+    border: 1px #111 solid;
+    background-color: #202328;
+    color: #ddd;
+}
+
+.scanlab-textarea {
+    width: 70%;
+    height: 200px;
+}
+
+.scanlab-input:focus,
+.scanlab-textarea:focus
+{
+    background-color: #999;
+    color: #111;
+}
+
+/* scanlab related */
+
+/* basic info about port*/
+.port-box {
+    padding: 10px;
+}
+.port-info {
+    font-size: 11px;
+    margin-bottom: 5px; 
+    padding-bottom: 5px;
+}
+
+/* version, scripts etc*/
+.port-details {
+    font-size: 11px;
+    margin-bottom: 5px; 
+    border-bottom: 1px #000 solid; 
+    padding-bottom: 5px;
+}
+
+.logo {
+    text-align: center;
+    text-shadow: 0px 0px 5px #0cc;
+    color: #0cc;
+    font-size: 200%;
+    font-family: monospace;
+    font-weight: bold;
+    background-image: linear-gradient(to bottom, #000 0%, #2B2F34 100%);
+}
+
+.report-row {
+    padding: 10px;
+    margin-bottom: 20px;
+}
+.report-row:hover {
+    border: 1px dashed #000;
+}
+
+.port {
+    color: white;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.port-open {
+    background-color: green;
+}
+
+.port-open-link {
+    background-color: #339999;
+
+}
+
+.port-filtered {
+    background-color: gray;
+}
+
+.port-closed {
+    background-color: red;
+}
+
+.tag-block {
+    
+}
+
+.tag-image {
+    margin: 10px;
+    width: 50px;
+    height: 50px;
+}
+
+/* RIPPED from bootstrap.css */
+table {
+    max-width: 100%;
+    background-color: transparent;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 20px;
+}
+.table th,
+.table td {
+    padding: 8px;
+    line-height: 20px;
+    text-align: left;
+    vertical-align: top;
+    border-top: 1px solid #333;
+}
+
+.table th {
+    font-weight: bold;
+}
+
+.table thead th {
+    vertical-align: bottom;
+}
+
+.table caption + thead tr:first-child th,
+.table caption + thead tr:first-child td,
+.table colgroup + thead tr:first-child th,
+.table colgroup + thead tr:first-child td,
+.table thead:first-child tr:first-child th,
+.table thead:first-child tr:first-child td {
+    border-top: 0;
+}
+
+.table tbody + tbody {
+    border-top: 2px solid #dddddd;
+}
+
+.table .table {
+    background-color: #ffffff;
+}
+
+
+.table-row-header {
+    background-color: #444;
+    border-bottom: 2px #000 solid;
+}
+
+.table-row-open {
+}
+
+pre {
+    max-width: 800px;
+}
+
+.search-div {
+}
+
+.search-form {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color:#202328;
+    border-top: 1px #111 solid;
+    border-bottom: 1px #111 solid;
+}
+
+.search-input {
+    font-size: 150%;
+    width: 70%;
+}
+
+.search-btn {
+    padding: 4px;
+    cursor: pointer;
+    border: 0px #ddd solid;
+    background-color: #eee;
+    font-size: 125%;
+}
+
+.search-btn:hover {
+    background-color: #aaa;
+}
+
+.pagination {
+    padding: 20px;
+}
+
+.error-box {
+    background-color: #3333ff;
+    color: white;
+    padding: 10px;
+    margin: 20px;
+}
+
+.btn {
+    padding: 3px;
+    cursor: pointer;
+    border: 1px #333 solid;
+    border-radius: 2px;
+    margin: 5px;
+    display: inline-block;
+    text-align: center; 
+    color: #111;
+    background-image: linear-gradient(to bottom, #ccc 0%, #eee 50%);
+}
+
+.btn:hover {
+    background-image: linear-gradient(to bottom, #aaa 0%, #ccc 50%);
+}
+
+.btn-blue {
+    background-image: linear-gradient(to bottom, #33ccff 0%, #3399cc 50%);
+}
+
+.btn-green {
+    background-image: linear-gradient(to bottom, #009900 0%, #009900 50%);
+}
+
+.btn-yellow {
+    background-image: linear-gradient(to bottom, #ccff66 0%, #ccff33 50%);
+}
+
+.btn-fav-del {
+    color: #111;
+    background-image: linear-gradient(to bottom, #090 0%, #1d1 50%);
+}
+
+.navi {
+    padding: 10px;
+}
+
+div.script-box {
+    padding: 5px;
+    background-color: #666;
+    cursor: pointer;
+    margin-bottom: 2px;
+    border-radius: 5px;
+}
+div.script-box:hover {
+    background-color: #888;
+}
+
+.item-link {
+    float: right;
+}
+
+.item-link > a:link {
+    color: #0000cc;
+}
+.item-link > a:visited {
+    color: #111111;
+}
+
+.safe-link {
+    cursor: pointer;
+}
+
+.safe-link-style {
+    color: #fff;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.safe-link-style:hover {
+    color: #aaa;
+}
+
+.help {
+    margin-top: 15px;
+}
+#toggle-help {
+   cursor: pointer; 
+   text-decoration: underline;
+}
+#help {
+    display: none;
+}
+
+.search-btn {
+        letter-spacing:0;
+        border:none;
+        cursor:pointer;
+        font-size:130%;
+        text-indent:-9999px;
+        width:70px;
+        text-shadow: none;
+}
+.search-btn:hover {
+        background-color:#202328;
+}
+
+.report-header {
+    margin-bottom: 10px;
+}
+
+.report-ports {
+    margin-top: 10px;
+}
+
+.ip-search:hover {
+    cursor: pointer;
+}
+
+/* Userspace */
+form.scanlab-form {
+    padding: 20px;
+}
+
+#target-form {
+    display: none;
+}
+
+form.scanlab-form > fieldset {
+    border: 1px #000 dotted;
+}
+
+form.scanlab-form > fieldset > input, textarea{
+    display: block;
+    margin: 10px;
+}
+
+
+.like-icon {
+    height: 15px;
+}
+
+.comment {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-bottom: 1px #333 solid;
+}
+
+.comment a {
+    font-weight: bold;
+    color: #cccccc;
+}
+
+.comment a:hover {
+    color: #999999;
+}

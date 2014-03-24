@@ -1,0 +1,58 @@
+{% include "header.html" %}
+{% include "navi.html" %}
+<script src="{{REL_URL}}js/root.js" type="text/javascript"></script>
+<div class="box">
+    <h1 class="center">Users</h1>
+    <table class="table small">
+        <tr class="table-row-header">
+            <th>Username</th>
+            <th>Account Limit</th>
+            <th>Favorites</th>
+            <th>Reports</th>
+            <th>Joined at</th>
+            <th>Api Key</th>
+            <th>Delete User</th>
+            <th>Delete Reports</th>
+        </tr>
+
+    {% for user in users %}
+        <tr>
+            <td>{{ user.username }}</td>
+            <td>
+                <form id="limit-form" action="{{REL_URL}}root" method="POST">
+                    <input value="{{ user.account_limit }}" name="limit" class="scanlab-input" type="text">
+                    <input value="{{ user.username }}" name="username" type="hidden">
+                    <input value="update_limit" name="action" type="hidden">
+                </form>
+            </td>
+            <td>{{ user.favorites_count }}</td>
+            <td>{{ user.reports_count }}</td>
+            <td>{{ user.joined_at|date('d M y')}}</td>
+            <td>
+                {% if user.api_key == 0 %}
+                <span class="btn small enable-api" title="{{user.username}}">enable API</span>
+                {% elseif user.api_key == 1 %}
+                <span class="btn small disable-api" title="{{user.username}}">disable API</span>
+                {% endif %}
+            </td>
+            <td>
+                <span class="btn small del-user" title="{{user.username}}">Del user</span>
+            </td>
+            <td>
+                <span class="btn small del-reports" title="{{user.username}}">Del reports</span>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+<div class="box">
+    <h1 class="center">New user</h1>
+    <form action="{{REL_URL}}root" method="POST">
+        <input name="username" type="text" placeholder="username" class="scanlab-input">
+        <input name="password" type="text" placeholder="password" class="scanlab-input">
+        <input value="add_user" name="action" type="hidden">
+        <input type="submit" value="Add" class="btn">
+    </form>
+</div>
+
+{% include "footer.html" %}

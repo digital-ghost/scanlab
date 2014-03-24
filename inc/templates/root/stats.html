@@ -1,0 +1,47 @@
+{% include "header.html" %}
+{% include "navi.html" %}
+<div class="box">
+    <h2 class="center">Database</h2>
+    <table class="table small">
+        <tr class="table-row-header">
+            <th>Collection name</th>
+            <th>Documents</th>
+            <th>Size</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>Users</td>
+            <td>{{db.users.count}}</td>
+            <td>{{db.users.size }} MB</td>
+            <td><a class="btn small" href="{{REL_URL}}root/users">View</a></td>
+        </tr>
+        <tr>
+            <td>Reports</td>
+            <td>{{db.reports.count}}</td>
+            <td>{{db.reports.size }} MB</td>
+            <td></td>
+        </tr>
+    </table>
+</div>
+<div class="box">
+    <h2 class="center">System</h2>
+    <table class="table small">
+        <tr class="table-row-header">
+            <th>Parameter</th>
+            <th>Total</th>
+            <th>Used</th>
+            <th>Free</th>
+        </tr>
+        <tr>
+            <td>Disk</td>
+            <td>{{disk.total}} MB</td>
+            <td>
+                {{disk.total - disk.free}} MB 
+                ({{(((disk.total - disk.free) / disk.total) * 100)|round}}%)
+            </td>
+            <td>{{disk.free}} MB</td>
+        </tr>
+    </table>
+</div>
+
+{% include "footer.html" %}
