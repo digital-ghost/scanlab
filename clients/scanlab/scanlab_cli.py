@@ -135,7 +135,7 @@ def check_report(report, send_all):
     Escape target argument
 '''
 def escape_target(target):
-    p = re.compile('[^a-z0-9.:-/*]')
+    p = re.compile('[^a-z0-9.:\-/*]')
     return p.sub('', target)
 
 '''
