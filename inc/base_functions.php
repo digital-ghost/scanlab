@@ -230,7 +230,7 @@ function getTags($report) {
         }
     }
 
-    return array_unique($return);
+    return array_values(array_unique($return));
 }
 
 ?>
