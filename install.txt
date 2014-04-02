@@ -1,7 +1,7 @@
 For server you will need to install these packages (Debian as example):
 
 nginx-full mongodb php5-fpm php5-cli
-php5-mongodb  php5-gd
+php5-mongodb php5-gd php5-geoip
 
 Debian Wheezy users can find php5-mongodb package in backports repository.
 

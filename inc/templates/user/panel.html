@@ -27,6 +27,17 @@
 </div>
 
 {% if user.api_key == 1 %}
+
+<div class="box">
+    <form action="{{REL_URL}}api/upload_xml" method="POST" enctype="multipart/form-data" class="scanlab-form">
+        <fieldset>
+            <legend>Upload XML report (10MB max)</legend>
+            <input type="hidden" name="MAX_FILE_SIZE" value="10024000" />
+            <input name="userfile" type="file" />
+            <input type="submit" class="btn" value="Upload">
+        </fieldset>
+    </form>
+</div>
 <div class="box">
     <p>
         <div class="center">

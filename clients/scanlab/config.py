@@ -109,12 +109,15 @@ sl_ports = {
 # Scanlab has really basic tag engine
 # TAGNAME : [list of phrases in xml]
 sl_tags = {
-    "camera":["ipcam","IPCam", "Ipcam", "netcam", "Netcam", "camera", "Camera", "CAMERA", "AXIS", "webcamXP", "ATZ", "IQhttpD", "Avtech", "DCS-930L"],        
+    "camera":["ipcam","IPCam", "Ipcam", "netcam", "Netcam", "camera", "Camera", 
+        "CAMERA", "AXIS", "webcamXP", "ATZ", "IQhttpD", "Avtech", "DCS-930L", "D-Link Internet", "WEBCAM"],        
     "cisco":["cisco", "level_15_access"],
     "anonftp":["Anonymous user logged in", "Anonymous access granted", "Anonymous FTP login allowed"],
     "windows":["IIS", "Microsoft Windows"],
     "linux":["Ubuntu", "Debian", "RHEL"],
-    "router":["wireless", "ADSL", "DSL Router", "TD-W8101G", "admin/1234", "Welcome to ASUS", "OpenWRT", "Linksys", "ZXV10"],
+    "router":["wireless", "ADSL", "DSL Router",
+        "TD-W8101G", "admin/1234", "Welcome to ASUS", "OpenWRT", "Linksys", "ZXV10", "NETGEAR","Netgear"],
     "printer":["LaserJet"],
+    "media":["Dreambox", "dreambox"],
     "scada":["Modicon", "SCADA", "AKCP", "WinCE", "IPC@CHIP"]
 }

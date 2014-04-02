@@ -20,6 +20,9 @@ class Api extends Scanlab {
                     case "get_target":
                         $this->getTarget();
                         break;
+                    case "upload_xml":
+                        $this->uploadXML();
+                        break;
                     default:
                         die("wtf r u doing");
             }
@@ -144,6 +147,40 @@ class Api extends Scanlab {
         if (!$this->checkLogin()) redirect(REL_URL."auth/login");
         if (!isset($_SESSION['api_key']) || $_SESSION["api_key"] != "true")
             showError('You cant use API functions');
+    }
+
+    // user uploads XML report
+    private function uploadXML() {
+        session_start();
+        $user = $this->checkLogin();
+        if (!$user) redirect(REL_URL."auth/login");
+        $user_row = $this->db->users->findOne(array("username" => $user));
+
+        if ($user_row['api_key'] !== 1) showError("API is disabled for you!");
+        if ($user_row['reports_count'] >= $user_row['account_limit']) showError("Account limit reached");
+
+        if (isset($_FILES["userfile"]["tmp_name"]) && !empty($_FILES["userfile"]["tmp_name"])) {
+            if ($_FILES["userfile"]["size"] > 10024000) showError("Uploaded file is too large");
+            libxml_use_internal_errors(true);
+            libxml_disable_entity_loader(true);
+            $xml_string = file_get_contents($_FILES["userfile"]["tmp_name"]);
+            if (!$xml_string) showError('Cant read file');
+            if (preg_match('/<!DOCTYPE/i', $xml_string)) showError("XML contains something evil");
+
+            $xml = simplexml_load_string($xml_string);
+            if ($xml) {
+                parseUpload($xml, $user, $this->db);
+                $new_count = $this->db->reports->find(array('user'=>$user))->count();
+                $this->db->users->update(
+                    array("username" => $user), array('$set' => array("reports_count" => $new_count))
+                );
+                redirect(REL_URL.'user/panel');
+            } else {
+                showError("You are doing it wrong!");
+            }
+        } else {
+            redirect(REL_URL.'user/panel');
+        }
     }
 
 }

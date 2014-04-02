@@ -116,4 +116,121 @@ function validateReport($report) {
     return $valid_report;
 }
 
+function parseUpload($xml, $user, $db) {
+    $time = time();
+    if (!isset($xml->host)) showError("Corrupt xml");
+    $hosts = $xml->host;
+
+    foreach ($hosts as $report) {
+        if (isset($report->status['state'])) {
+            $status = (string) $report->status['state'];
+        } else {
+            showError("Status not set!");
+        }
+
+        if (isset($report->address['addr'])) {
+            $address = (string) $report->address['addr'];
+        } else {
+            showError("Address not set!");
+        }
+
+        $hostname = ""; 
+        if ($report->hostnames->hostname) {
+            if (isset($report->hostnames->hostname[0]['name']))
+                $hostname = (string) $report->hostnames->hostname[0]['name'];
+        }
+
+        $ports = array();
+        if ($report->ports->port) {
+            foreach ($report->ports->port as $port) {
+                $port_array = array();
+
+                if (isset($port["portid"]) && isset($port["protocol"]))
+                    $port_array = array(
+                        "portid" => (string) $port["portid"], 
+                        "protocol" => (string) $port["protocol"] 
+                    );
+                if ($port->state && isset($port->state['state']))
+                    $port_array["state"] = (string) $port->state['state'];
+                
+                if ($port->service && isset($port->service['name']))
+                    $port_array["service"] = array(
+                        "name" => (string) $port->service['name']
+                    );
+
+               $ports[] = $port_array;
+            }
+        }
+
+        $geoip_info = array();
+        $country_code = geoip_country_code_by_name($address);
+        if ($country_code) {
+            $geoip_info["country"] = $country_code;
+        } else {
+            $geoip_info["country"] = "AQ";
+        }
+
+
+        $data = array(
+            "raw_xml" => (string) $report->asXML(),
+            "user" => $user,
+            "timestamp" => $time,
+            "rate" => 0,
+            "report" => array(
+                "status" => $status,
+                "address" => $address,
+                "hostname" => $hostname,
+                "geoip" => $geoip_info,
+                "ports" => $ports
+            )
+        );
+        if (checkReport($data) === false) continue;
+        $data['tags'] = getTags($data);
+        $data['report'] = validateReport($data['report']);
+
+        try {
+            $db->reports->insert($data);
+        } catch (Exception $e) {
+            die("Something awful happened");
+        }
+    }                
+}
+
+function checkReport($report, $send_all='false') {
+    if ($send_all === true) return true;
+    if ( $report['report']['status'] !== 'up') return false;
+    foreach ($report['report']['ports'] as $port) {
+        if ($port['state'] == 'open') return true;
+    }
+    return false;
+}
+
+function getTags($report) {
+    $sl_tags = array(
+        "camera" => array("ipcam","IPCam", "Ipcam", "netcam", "Netcam", "camera", "Camera", 
+            "CAMERA", "AXIS", "webcamXP", "ATZ", "IQhttpD", "Avtech", "DCS-930L", "D-Link Internet", "WEBCAM"),        
+        "cisco" => array("cisco", "level_15_access"),
+        "anonftp" => array("Anonymous user logged in", "Anonymous access granted", "Anonymous FTP login allowed"),
+        "windows" => array("IIS", "Microsoft Windows"),
+        "linux" => array("Ubuntu", "Debian", "RHEL"),
+        "router" => array("wireless", "ADSL", "DSL Router",
+            "TD-W8101G", "admin/1234", "Welcome to ASUS", "OpenWRT", "Linksys", "ZXV10", "NETGEAR","Netgear"),
+        "printer" => array("LaserJet"),
+        "media" => array("Dreambox", "dreambox"),
+        "scada" => array("Modicon", "SCADA", "AKCP", "WinCE", "IPC@CHIP")
+    );
+
+    $return = array();
+
+    foreach ($sl_tags as $tag => $words) {
+        foreach ($words as $word) {
+            if (strpos($report["raw_xml"], $word) !== false) {
+                $return[] = $tag;
+            }
+        }
+    }
+
+    return array_unique($return);
+}
+
 ?>
