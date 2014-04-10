@@ -46,40 +46,37 @@
         <div class="script-box">
             <div class="center"><b >Client usage</b></div>
             <div class="hidden">
-                <h1>Установка.</h1>
-                Чтобы запустить клиент, вам нужен интерпретатор python и некоторые пакеты. 
-                Инструкции написаны для Debian и Ubuntu.
-                Установить все зависимости одной командой можно так (выполнять от рута):
+                <h1>Installation</h1>
+                Instructions for Debian/Ubuntu/Kali Linux.
+                To install all dependencies run this command as root:
                 <pre>apt-get install -y python nmap python-pip geoip-database &amp;&amp; pip install pygeoip sleekxmpp PySocks</pre>
 
-                <h1>Работа с клиентом:</h1>
+                <h1>Usage</h1>
 
-                Для начала, вам необходимо настроить сам клиент.
-                Отредактируйте под себя и сохраните файл config.py.<br>
+                First edit and save configuration file "config.py".<br>
 
-                Чтобы загрузить в базу отчёт nmap в формате xml:
+                To upload xml file into database:
                 <pre>python scanlab_cli.py -f file.xml</pre>
 
-                Режим удалённого клиента. Клиент так можно запустить один раз,
-                далее он будет автоматически получать цели, которые вы введете в панели управления.
-                Эти цели он будет сканировать и загружать на сервер.
+                Remote client control.
+                You can run client once and add targets for scanner from web control panel.
                 <pre>python scanlab_cli.py --remote</pre>
 
-                Чтобы просканировать одну цель и загрузить результат на сервер:
+                To scan one target and upload results to database:
                 <pre>python scanlab_cli.py -t 192.168.1.0/24</pre>
 
-                Просканировать список целей из файла (как -iL в nmap):
+                Scan list of targets (like -iL in nmap):
                 <pre>python scanlab_cli.py -l targets.txt</pre>
 
-                Сгенерировать список случайных IP для сканирования. Аргумент - количество IP.
-                В той же папке создаётся файл с IP targets.txt.
-                Работает только в никсах.
+                If you want generate random IP addresses for scanning run this.
+                Argument is number of random IPs.
+                Output is saved to file targets.txt.
+                (only works in unix systems)
                 <pre>python scanlab_cli.py --random=10000</pre>
 
-                Сгенерировать список случайных доменов. В той же папке создаётся файл с доменами domains.txt.
-                Аргумент - домен верхнего уровня. Использовать с опцией --domain-length, которая укажет длинну
-                генерируемых доменов.
-                Например, если хочешь сгенерировать все домены ru длинной в 4 символа:
+                Generate list of domains to scan. Output is saved to file domains.txt.
+                Argument is top level domain. Use it with --domain-length, which specifies length of domains.
+                Example: generate all possible .ru domains, max length is 4 symbols.
                 <pre>python scanlab_cli.py --domain=ru --domain-length=4</pre>
             </div>
         </div>
