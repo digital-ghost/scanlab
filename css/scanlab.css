@@ -23,7 +23,7 @@ a:visited {
 
 .container {
     background-color: #2B2F34;
-    min-width: 600px;
+    min-width: 800px;
     max-width: 940px;
     margin: 0 auto;
     padding-bottom: 10px;
@@ -62,26 +62,6 @@ a:visited {
     display: none;
 }
 
-.scanlab-input, .scanlab-textarea {
-    padding: 5px;
-    border: 1px #111 solid;
-    background: #202328;
-    color: #ddd;
-}
-
-.scanlab-textarea {
-    width: 70%;
-    height: 200px;
-}
-
-.scanlab-input:focus,
-.scanlab-textarea:focus
-{
-    transition: background 0.3s ease, color 0.3s ease;
-    background: #999;
-    color: #111;
-}
-
 /* scanlab related */
 
 /* basic info about port*/
@@ -106,7 +86,8 @@ a:visited {
     text-align: center;
     text-shadow: 0px 0px 5px #0cc;
     color: skyblue;
-    font-size: 200%;
+    font-size: 300%;
+    padding-top: 10px;
     font-family: monospace;
     font-weight: bold;
     background-image: linear-gradient(to bottom, #000 0%, #2B2F34 100%);
@@ -199,20 +180,13 @@ table {
     background-color: #ffffff;
 }
 
-
 .table-row-header {
     background-color: #444;
     border-bottom: 2px #000 solid;
 }
 
-.table-row-open {
-}
-
 pre {
     max-width: 800px;
-}
-
-.search-div {
 }
 
 .search-form {
@@ -222,23 +196,6 @@ pre {
     background-color:#202328;
     border-top: 1px #111 solid;
     border-bottom: 1px #111 solid;
-}
-
-.search-input {
-    font-size: 150%;
-    width: 70%;
-}
-
-.search-btn {
-    padding: 4px;
-    cursor: pointer;
-    border: 0px #ddd solid;
-    background-color: #eee;
-    font-size: 125%;
-}
-
-.search-btn:hover {
-    background-color: #aaa;
 }
 
 .pagination {
@@ -327,28 +284,12 @@ div.script-box:hover {
     color: #aaa;
 }
 
-.help {
-    margin-top: 15px;
-}
 #toggle-help {
    cursor: pointer; 
    text-decoration: underline;
 }
 #help {
     display: none;
-}
-
-.search-btn {
-    letter-spacing:0;
-    border:none;
-    cursor:pointer;
-    font-size:130%;
-    text-indent:-9999px;
-    width:70px;
-    text-shadow: none;
-}
-.search-btn:hover {
-        background-color:#202328;
 }
 
 .report-header {
@@ -368,23 +309,78 @@ form.scanlab-form {
     padding: 20px;
 }
 
-#target-form {
-    display: none;
-}
-
 form.scanlab-form > fieldset {
     border: none;
 }
 
-form.scanlab-form > fieldset > input, textarea{
+form.scanlab-form > fieldset > input, textarea {
     display: block;
     margin-bottom: 5px;
+    padding: 5px;    
+}
+
+form.scanlab-form > fieldset > 
+    input[type="text"], input[type="password"], textarea
+{
+
+    border: 1px #111 solid;
+    background: #202328;
+    color: #ddd;
+}
+
+form.scanlab-form > fieldset > 
+    input[type="text"]:focus, input[type="password"]:focus, textarea:focus 
+{
+    transition: background 0.3s ease, color 0.3s ease;
+    background: #999;
+    color: #111;
+}
+
+form.scanlab-form > fieldset > input[type="submit"]
+{
+    display: block;
+    margin-bottom: 5px;
+    padding: 5px;
 }
 
 form.scanlab-form > fieldset > legend {
     text-decoration: underline;
 }
 
+form.scanlab-form > fieldset > textarea
+{
+    width: 70%;
+    height: 200px;   
+}
+
+form.scanlab-form > fieldset > input.search-input {
+    display: inline;
+    font-size: 150%;
+    width: 70%;
+}
+
+form.scanlab-form > fieldset > input.search-btn {
+    display: inline;
+    padding: 5px;
+    letter-spacing:0;
+    border:none;
+    cursor:pointer;
+    font-size:130%;
+    text-indent:-9999px;
+    width:70px;
+}
+
+form.scanlab-form.inline {
+    padding: 0px;
+}
+
+form.scanlab-form.inline > fieldset > input {
+    display: inline;
+}
+
+#target-form {
+    display: none;
+}
 
 .like-icon {
     height: 15px;

@@ -4,7 +4,7 @@
     </div>
         <div id="target-form">
 			<form action="{{REL_URL}}forum/add_comment" method="POST" class="scanlab-form">
-
+				<fieldset>
 				{% if parent %}
 					<input type="hidden" name="report" value="{{parent.report}}">
 					<input type="hidden" name="parent" value="{{parent.id}}">
@@ -16,8 +16,10 @@
 					{% endif %}
 					<input type="hidden" name="parent" value="0">
 				{% endif %}
-			    <textarea name="text" class="scanlab-textarea"></textarea>
+			    <textarea name="text"></textarea>
 			    <input type="submit" class="btn" value="Send">
+				</fieldset>
+
 			</form>
 		</div>
 </div>

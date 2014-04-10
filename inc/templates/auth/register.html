@@ -9,9 +9,9 @@
                 Registration allows you to save interesting reports into favorites.
                 Please, contact admin if you want to use all advanced features of Scanlab.
             </p>
-            <input type="text" class="scanlab-input" name="username" placeholder="username">
-            <input type="password" class="scanlab-input" name="password" placeholder="password">
-            <input type="text" class="scanlab-input" name="captcha" placeholder="captcha">
+            <input type="text" name="username" placeholder="username" pattern="[a-z0-9]{4,16}" required>
+            <input type="password" name="password" placeholder="password" pattern="[a-z0-9A-Z!@#$%&]{8,32}" required>
+            <input type="text" name="captcha" placeholder="captcha" required>
             <img src="{{REL_URL}}statique/captcha">
             <input type="submit" class="btn btn-green" value="Register">
         </fieldset>

@@ -11,7 +11,6 @@
                 {% endfor %}
             {% endif %}
         </div>
-        <hr>
         {% if host.hostnames.hostname %}
             <div class="small">
                 {% for hostname in host.hostnames.hostname %}
@@ -20,9 +19,16 @@
             </div>
         {% endif %}
 
+
+        {% if host.distance %}
+            <div class="small mute">Distance: {{ host.distance.attributes.value }} hops</div>
+        {% endif %}
+        {% if host.uptime %}
+            <div class="small mute">Last boot: {{ host.uptime.attributes.lastboot }}</div>
+        {% endif %}
+
         {% if host.os %}
-            <div class="small">
-                OS:
+            <div class="small mute">
                 {% if host.os.osmatch %}
                     {% for os in host.os.osmatch %}
                         {{ os.attributes.name }} ({{ os.attributes.accuracy }}%). 
@@ -30,12 +36,8 @@
                 {% endif %}
             </div>
         {% endif %}
-        {% if host.distance %}
-            <div class="small">Distance: {{ host.distance.attributes.value }} hops</div>
-        {% endif %}
-        {% if host.uptime %}
-            <div class="small">Last boot: {{ host.uptime.attributes.lastboot }}</div>
-        {% endif %}
+        <hr>
+
         <div class="mute">
             <span class="item-link">
                 {% if session.logged_in %}
@@ -146,8 +148,11 @@
         {# If extra ports: #}
         {% if host.ports.extraports %}
             {% for extraport in host.ports.extraports %}
-                {% if extraport.state == 'closed' %}
-                    <p class="text-error">Closed ports: {{ extraport.count }}</p>
+                {% if extraport.attributes.state == 'closed' %}
+                    <p class="small mute">Closed ports: {{ extraport.attributes.count }}</p>
+                {% endif %}
+                {% if extraport.attributes.state == 'filtered' %}
+                    <p class="small mute">Filtered ports: {{ extraport.attributes.count }}</p>
                 {% endif %}
             {% endfor %}
         {% endif %}
@@ -156,31 +161,30 @@
     {% endif %}
 
     {% if host.trace %}
-<div class="box">
+    <div class="box">
         <div class="big">Traceroute</div>
-            <table class="table small">
-                <tr class="table-row-header">
-                    <th>Hop</th>
-                    <th>Time</th>
-                    <th>Host</th>
-                </tr>
+        <table class="table small">
+            <tr class="table-row-header">
+                <th>Hop</th>
+                <th>Time</th>
+                <th>Host</th>
+            </tr>
 
-                {% for hop in host.trace.hop %}
-                <tr>
-                    <td>{{ hop.attributes.ttl }}</td>
-                    <td>{{ hop.attributes.rtt }}</td>
-                    <td>
-                        {% if hop.attributes.host %}
-                            {{ hop.attributes.host }}
-                        {% else %} 
-                            {{ hop.attributes.ipaddr }}
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-       
-</div>
+            {% for hop in host.trace.hop %}
+            <tr>
+                <td>{{ hop.attributes.ttl }}</td>
+                <td>{{ hop.attributes.rtt }}</td>
+                <td>
+                    {% if hop.attributes.host %}
+                        {{ hop.attributes.host }}
+                    {% else %} 
+                        {{ hop.attributes.ipaddr }}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
     {% endif %}
 </div>
 

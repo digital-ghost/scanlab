@@ -19,10 +19,13 @@
         <tr>
             <td>{{ user.username }}</td>
             <td>
-                <form id="limit-form" action="{{REL_URL}}root" method="POST">
+                <form id="limit-form" class="scanlab-form inline" action="{{REL_URL}}root" method="POST">
+                    <fieldset>
                     <input value="{{ user.account_limit }}" name="limit" class="scanlab-input" type="text">
                     <input value="{{ user.username }}" name="username" type="hidden">
                     <input value="update_limit" name="action" type="hidden">
+                    </fieldset>
+
                 </form>
             </td>
             <td>{{ user.favorites_count }}</td>
@@ -46,12 +49,14 @@
     </table>
 </div>
 <div class="box">
-    <h1 class="center">New user</h1>
-    <form action="{{REL_URL}}root" method="POST">
-        <input name="username" type="text" placeholder="username" class="scanlab-input">
-        <input name="password" type="text" placeholder="password" class="scanlab-input">
-        <input value="add_user" name="action" type="hidden">
-        <input type="submit" value="Add" class="btn">
+    <h1 class="center">Add new user</h1>
+    <form action="{{REL_URL}}root" method="POST" class="scanlab-form">
+        <fieldset>
+            <input name="username" type="text" placeholder="username" class="scanlab-input">
+            <input name="password" type="text" placeholder="password" class="scanlab-input">
+            <input value="add_user" name="action" type="hidden">
+            <input type="submit" value="Add" class="btn">
+        </fieldset>
     </form>
 </div>
 

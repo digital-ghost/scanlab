@@ -90,7 +90,7 @@
         <form action="{{REL_URL}}user/add_targets" method="POST" class="scanlab-form">
             <fieldset>
                 <legend>This should be nmap compatible target list. Watch <b>man nmap</b> for more.</legend>
-                <textarea name="targets" class="scanlab-textarea">{{user.targets}}</textarea>
+                <textarea name="targets">{{user.targets}}</textarea>
                 <input type="submit" class="btn" value="Save targets">
             </fieldset>
         </form>
