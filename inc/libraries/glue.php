@@ -42,9 +42,14 @@
          *
          */
         static function stick ($urls) {
+            $allowed_methods = array('GET', 'POST');
 
             $method = strtoupper($_SERVER['REQUEST_METHOD']);
             $path = $_SERVER['REQUEST_URI'];
+
+            if (!in_array($method, $allowed_methods)) {
+                throw new Exception("Method not allowed.");
+            }
 
             $found = false;
 
