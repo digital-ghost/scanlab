@@ -22,7 +22,6 @@
         <a class="btn" href='{{REL_URL}}search?q=user:{{user.username}}'>Search in your reports</a>
     </p>
     {% endif %}
-    </p>
 </div>
 </div>
 
@@ -33,13 +32,13 @@
         <fieldset>
             <legend>Upload XML report (10MB max)</legend>
             <input type="hidden" name="MAX_FILE_SIZE" value="10024000" />
+            <input type="hidden" name="token" value="{{ session.token }}">
             <input name="userfile" type="file" />
             <input type="submit" class="btn" value="Upload">
         </fieldset>
     </form>
 </div>
 <div class="box">
-    <p>
         <div class="center">
             <a class="btn btn-green big" href="{{REL_URL}}clients/client.tgz">Download client</a>
         </div>
@@ -80,7 +79,6 @@
                 <pre>python scanlab_cli.py --domain=ru --domain-length=4</pre>
             </div>
         </div>
-    </p>
 </div>
 <div class="box">
     <div class="center">
@@ -91,6 +89,7 @@
             <fieldset>
                 <legend>This should be nmap compatible target list. Watch <b>man nmap</b> for more.</legend>
                 <textarea name="targets">{{user.targets}}</textarea>
+                <input type="hidden" name="token" value="{{ session.token }}">
                 <input type="submit" class="btn" value="Save targets">
             </fieldset>
         </form>

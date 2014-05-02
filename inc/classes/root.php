@@ -46,6 +46,7 @@ class Root extends Scanlab {
 
     function POST(){
         if (isset($_POST['action']) && !empty($_POST['action'])) {
+            $this->checkToken();
             switch ($_POST['action']) {
 
                 case "enable_api":

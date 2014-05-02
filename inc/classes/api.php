@@ -154,6 +154,7 @@ class Api extends Scanlab {
         session_start();
         $user = $this->checkLogin();
         if (!$user) redirect(REL_URL."auth/login");
+        $this->checkToken();
         $user_row = $this->db->users->findOne(array("username" => $user));
 
         if ($user_row['api_key'] !== 1) showError("API is disabled for you!");

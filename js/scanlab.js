@@ -102,7 +102,7 @@ $(document).ready(function(){
 
     $(document).on("click", '.btn-fav-add', function() {
         report_id = this.title;
-        $.post(rel_url+"user/add_fav", {id: report_id}).done(function(data) {
+        $.post(rel_url+"user/add_fav", {id: report_id, token:token}).done(function(data) {
             if (data != "11") {
                 alert("something went wrong");
             } else {
@@ -124,7 +124,7 @@ $(document).ready(function(){
 
     $(document).on("click",'.btn-fav-del', function() {
         report_id = this.title;
-        $.post(rel_url+"user/del_fav", {id: report_id}).done(function(data) {
+        $.post(rel_url+"user/del_fav", {id: report_id, token:token}).done(function(data) {
             if (data != "11") {
                 alert("something went wrong");
             } else {

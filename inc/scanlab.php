@@ -98,5 +98,11 @@ class Scanlab {
         }
         return $result;
     }
+
+    public function checkToken() {
+        if (!isset($_POST["token"]) || $_POST["token"] !== $_SESSION["token"]) {
+            showError("Invalid security token.");
+        }
+    }
     
 }

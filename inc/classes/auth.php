@@ -117,6 +117,7 @@ class Auth extends Scanlab {
     private function login($user) {
         $_SESSION["username"] = $user["username"];
         $_SESSION["logged_in"] = "true";
+        $_SESSION["token"] = substr(str_shuffle("abcdefghijklmnopqrstuvwxyz1234567890"), 0, 8);
         if ($user["api_key"] == "1") $_SESSION["api_key"] = "true";
         setcookie("sl_login", "true", 0, "/");
     }
@@ -127,6 +128,7 @@ class Auth extends Scanlab {
         setcookie("sl_favs", "", time() - 3600, "/");
         $_SESSION["username"] = "";
         $_SESSION["logged_in"] = "";
+        $_SESSION["token"] = "";
         session_destroy();
     }
 

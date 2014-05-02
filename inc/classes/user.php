@@ -58,6 +58,7 @@ class User extends Scanlab {
 
     function POST($matches) {
         if (isset($matches[2])) {
+            $this->checkToken();
             switch ($matches[2]) {
                 case "add_fav":
                     #   Add id to favorites
