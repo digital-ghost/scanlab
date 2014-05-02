@@ -21,7 +21,7 @@
             <td>
                 <form id="limit-form" class="scanlab-form inline" action="{{REL_URL}}root" method="POST">
                     <fieldset>
-                    <input value="{{ user.account_limit }}" name="limit" class="scanlab-input" type="text">
+                    <input value="{{ user.account_limit }}" name="limit" type="text">
                     <input value="{{ user.username }}" name="username" type="hidden">
                     <input type="hidden" name="token" value="{{ session.token }}">
                     <input value="update_limit" name="action" type="hidden">
@@ -54,8 +54,8 @@
     <form action="{{REL_URL}}root" method="POST" class="scanlab-form">
         <fieldset>
             <input type="hidden" name="token" value="{{ session.token }}">
-            <input name="username" type="text" placeholder="username" class="scanlab-input">
-            <input name="password" type="text" placeholder="password" class="scanlab-input">
+            <input name="username" type="text" placeholder="username">
+            <input name="password" type="text" placeholder="password">
             <input value="add_user" name="action" type="hidden">
             <input type="submit" value="Add" class="btn">
         </fieldset>
