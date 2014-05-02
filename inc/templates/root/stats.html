@@ -1,5 +1,6 @@
 {% include "header.html" %}
 {% include "navi.html" %}
+
 <div class="box">
     <h2 class="center">Database</h2>
     <table class="table small">
@@ -22,6 +23,11 @@
             <td></td>
         </tr>
     </table>
+    <form action="{{REL_URL}}root" method="POST" class="scanlab-form center">
+        <input value="update_cache" name="action" type="hidden">
+        <input type="hidden" name="token" value="{{ session.token }}">
+        <input type="submit" value="Update overview cache" class="btn small">
+    </form>
 </div>
 <div class="box">
     <h2 class="center">System</h2>

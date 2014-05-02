@@ -12,7 +12,13 @@ class Overview extends Scanlab {
     function GET($matches) {
         if (USE_WORKER === true) {
             $distinct = $this->db->cache->findOne(array("key" => "distinct_cache"));
-            if ($distinct == NULL) showError("no cached version available");
+            if ($distinct == NULL) {
+                if ($this->user === ROOT_USER) {
+                    showError("No cached version available. You can manually update cache at <a href='".REL_URL
+                        ."root/stats'>root panel</a>.");
+                }
+                showError("No cached version available.");
+            }
             $distinct = unserialize($distinct["value"]);   
         } else {
             $distinct = getDistinct($this->db);
@@ -22,7 +28,6 @@ class Overview extends Scanlab {
             $type = $matches[2];
 
             if ($type === 'services') {
-                //$service_distinct = $this->db->reports->distinct('report.ports.service.name');
                 $vars = array("services" => $distinct["services"]);
             } elseif ($type === 'ports') {
                 $vars = array("ports" => $distinct["ports"]);
@@ -31,7 +36,6 @@ class Overview extends Scanlab {
             } elseif ($type==='tags') {
                 $vars = array("tags" => $distinct["tags"]);
             } else {
-                //$vars = array();
                 $this->renderError('no such type');
             }
         } else {

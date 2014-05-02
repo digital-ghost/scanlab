@@ -73,6 +73,10 @@ class Root extends Scanlab {
                     $this->delReports();
                     break;
 
+                case "update_cache":
+                    $this->updateCache();
+                    break;
+
                 default:
                     die("hurr");
             }
@@ -157,6 +161,17 @@ class Root extends Scanlab {
             $this->registerUser($user, $pass);
             redirect(REL_URL."root/users");
         } 
+    }
+
+    private function updateCache() {
+        $distinct = serialize(getDistinct($this->db));
+        $cache = $this->db->cache->findOne(array("key" => "distinct_cache"));
+        if ($cache == NULL) {
+            $this->db->cache->insert(array("key" => "distinct_cache", "value" => $distinct));
+        } else {
+            $this->db->cache->update(array("key" => "distinct_cache"), array('$set' => array("value"=> $distinct)));
+        }
+        redirect(REL_URL."root");
     }
 
 }
