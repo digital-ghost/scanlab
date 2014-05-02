@@ -16,17 +16,7 @@ if (isset($argv[1])){
             ##
             #   Update global distinct values
             ##
-            $distinct = serialize(getDistinct($db));
-
-            $cache = $db->cache->findOne(array("key" => "distinct_cache"));
-
-            if ($cache == NULL) {
-                // no cache available, insert new cache result
-                $db->cache->insert(array("key" => "distinct_cache", "value" => $distinct));
-            } else {
-                // update cache
-                $db->cache->update(array("key" => "distinct_cache"), array('$set' => array("value"=> $distinct)));
-            }
+            updateOverviewCache($db);
             break;
         case "del_old":
             ##
