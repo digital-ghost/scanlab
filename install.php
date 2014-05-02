@@ -4,8 +4,12 @@
 # Delete this file after installation
 ##
 
-require('inc/settings.php');
 require('inc/html.php');
+if (!file_exists('inc/settings.php')) {
+    showError('Please, edit file "inc/example.settings.php" and save it as "inc/settings.php".');
+}
+
+require('inc/settings.php');
 
 # Check all php extentions
 if (!extension_loaded('mongo')) {
