@@ -188,25 +188,6 @@
     {% endif %}
 </div>
 
-<div class="box small">
-{% if comments.count != "0" %}
-{% for message in comments %}
-<div class="comment">
-        <div class="mute">
-            {{message.user}} @ {{message.timestamp|date('d/M/y')}}
-            {% if message.parent == '0' and not parent %}
-            (replies: {{message.replies}}) <a href="{{REL_URL}}forum/thread/{{attribute(message, '_id')}}" class="">[view]</a>
-            {% endif %}
-        </div>
-        <div>{{message.text}}</div>
-</div>
-{% endfor %}
-
-{% else %}
-{% include 'forum/postform.html' %}
-{% endif %}
-</div>
-
 
 {% include 'footer.html' %}
 

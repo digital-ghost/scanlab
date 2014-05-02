@@ -26,12 +26,10 @@ class Report extends Scanlab {
         $host = simplexml_load_string($result['raw_xml']);
 
         if (!$host) $this->renderError('invalid xml in this entry');
-        $comments = $this->db->comments->find(array("report" => $id));
         //variables to pass to the template
         $vars = array(
             "id" => $id,
             "result" => $result,
-            "comments" => $comments,
             "host" => $host
         );
 

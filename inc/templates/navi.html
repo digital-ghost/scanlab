@@ -13,7 +13,6 @@
         {% if session.logged_in == "true" %}
             <a title="Select filters for your searches" href="{{ REL_URL }}overview" class="btn">Overview</a>
             <a title="Your control panel" href="{{ REL_URL }}user/panel" class="btn">Control Panel</a>
-            <a title="Comments" href="{{ REL_URL }}forum/view" class="btn">Forum</a>
             <a href="{{ REL_URL }}auth/logout" class="btn">Logout</a>
         {% else %}
             <a href="{{ REL_URL }}auth/login" class="btn">Login</a>

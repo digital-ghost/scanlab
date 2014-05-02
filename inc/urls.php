@@ -11,7 +11,6 @@ $conf_urls = array(
     "auth(|/([a-z]+))" => "Auth",
     "root(|/([a-z]+))" => "Root",
     "user(|/([a-z_]+)(|\?p=([0-9]+)))" => "User",
-    "forum(|/([a-z_]+)(|/([a-z0-9]+))(|\?p=([0-9]+)))" => "forum",
     "ajax" => "Ajax",
     "rss/(search)?(.*)" => "Rss",
     "statique/(js|captcha|)" => "Statique"
