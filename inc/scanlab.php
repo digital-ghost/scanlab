@@ -5,6 +5,10 @@
 
 class Scanlab {
     function __construct() {
+        // allow only get and post requests
+        if ( !in_array(strtoupper($_SERVER['REQUEST_METHOD']), array('GET', 'POST')))
+            showError("Wrong request method.");
+
         $this->db_cli = new MongoClient(DB_SERVER);
         $this->db = $this->db_cli->selectDB(DB_NAME);
         Twig_Autoloader::register();
