@@ -251,11 +251,8 @@ class SendMsgBot(sleekxmpp.ClientXMPP):
                           mtype='chat')
         self.disconnect(wait=True)
 
-# ACTION
-if __name__ == "__main__":
-    usage = "Usage: %prog [options]"
-    optp = OptionParser(usage=usage)
-
+def main():
+    optp = OptionParser(usage="Usage: %prog [options]")
     optp.add_option("-f", "--file", dest="file_name", help="File upload - parse and upload xml file to ScanLab", metavar="FILE")
     optp.add_option("-d", "--remote", action="store_true", dest="remote",
             help="Remote client - get targets from ScanLab server, scan them and upload results to ScanLab")
@@ -359,3 +356,6 @@ if __name__ == "__main__":
 """)
         optp.print_help()
         exit()
+
+if __name__ == "__main__":
+    main()

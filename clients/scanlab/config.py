@@ -3,13 +3,13 @@
 ##
 
 # Your username
-user = 'user'
+user = 'admin'
 
 # Your password
-code = '12345678'
+code = 'letadminin'
 
 # URL to scanlab API
-api_url = 'http://scanlab.crypt0.org/api/'
+api_url = 'http://private.scanlab.project.li/api/'
 
 # Set true if you want to do all the requests to ScanLab server with TOR
 # (NMAP still will be running withought TOR!)
