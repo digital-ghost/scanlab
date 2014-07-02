@@ -12,22 +12,34 @@ import urllib2
 import itertools
 import string
 import re
+from datetime import datetime
 from hashlib import sha1
 from config import *
 from optparse import OptionParser
 import xml.etree.ElementTree as ET
 
+
+'''
+    Fancy output
+'''
+def fan_print(message, mode='error'):
+    c_time = datetime.now().strftime("%d %b %H:%M:%S")
+    if mode == 'info':
+        print('\033[94m++ {0} {1}\033[0m'.format(c_time, message))
+    if mode == 'error':
+        print('\033[91m!! {0} {1}\033[0m'.format(c_time, message))
+
 try:
     import pygeoip
 except:
-    print("!! You need to install pygeoip package !!\nDo: sudo apt-get install -y python-pip && sudo pip install pygeoip")
-    sys.exit(-1)
+    fan_print("You need to install pygeoip package !!\nDo: sudo apt-get install -y python-pip && sudo pip install pygeoip")
+    exit()
 
 try:
     import sleekxmpp
 except:
-    print("!! You need to install sleekxmpp package !!\nDo: sudo pip install sleekxmpp")
-    sys.exit(-1)
+    fan_print("You need to install sleekxmpp package !!\nDo: sudo pip install sleekxmpp")
+    exit()
 
 time_begin = time.time()
 gi = pygeoip.GeoIP(geoip_file)
@@ -41,8 +53,8 @@ if use_tor == True:
     try:
         import socks
     except:
-        print("!! You need to install Socks package !!")
-        print("Do: sudo apt-get install python-socksipy OR sudo pip install PySocks")
+        fan_print("You need to install Socks package !!")
+        fan_print("Do: sudo apt-get install python-socksipy OR sudo pip install PySocks")
         sys.exit(-1)
     import socket
     socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9050)
@@ -52,6 +64,7 @@ if use_tor == True:
         return [(socket.AF_INET, socket.SOCK_STREAM, 6, '', (args[0], args[1]))]
     
     socket.getaddrinfo = getaddrinfo
+
 
 '''
     Return tags found in report
@@ -80,7 +93,7 @@ def get_target():
     try:
         return urllib2.urlopen(req).read()
     except:
-        print("!! Can't connect to server")
+        fan_print("Can't connect to server")
         exit()
 
 '''
@@ -101,22 +114,22 @@ def send_reports(reports, user, auth_hash, i):
     try:
         content = urllib2.urlopen(req).read()
     except:
-        print("!! Can't connect to server")
+        fan_print("Can't connect to server")
         exit()
 
     if content == '1': 
-        print('++ packet sent ({0} total)'.format(i))
+        fan_print('packet sent ({0} total)'.format(i), 'info')
     elif content == '2':
-        print('!! API is not enabled for this user')
+        fan_print('API is not enabled for this user')
         exit()
     elif content == '3':
-        print('!! Account limit reached')
+        fan_print('Account limit reached')
         exit()
     elif content == '0':
-        print('!! Invalid username/password')
+        fan_print('Invalid username/password')
         exit()
     else:
-        print(content)
+        fan_print(content)
 
 '''
     Check report if it is junk or not
@@ -145,7 +158,7 @@ def parse_and_send(file_name):
     try:
         xml = ET.parse(file_name).getroot()
     except:
-        print("!! xml file is corrupted")
+        fan_print("xml file is corrupted")
         exit()
 
     reports = []
@@ -205,7 +218,7 @@ def parse_and_send(file_name):
 '''
 def scan_target(target, scanlab_mode):
     target = escape_target(target)
-    print("++ Start scanning " + target)
+    fan_print("Start scanning " + target, 'info')
     if scanlab_mode == False:
         '''Do basic nmap scan'''
         nmap_str = "{0} {1} -oX {2}temp.xml {3}".format(nmap_bin, nmap_args, cwd, target)
@@ -231,7 +244,7 @@ def scan_target(target, scanlab_mode):
             parse_and_send(cwd+"temp.xml")
             os.system("rm "+cwd+"temp.xml")
 
-    print("++ Finished scanning " + target)
+    fan_print("Finished scanning " + target, 'info')
 
 '''
     XMPP bot class
@@ -282,7 +295,7 @@ def main():
             cwd
         )
         os.system(cmd)
-        print("++ File targets.txt is ready")
+        fan_print("File targets.txt is ready", 'info')
         exit()
     elif opts.domain is not None and opts.domain_length is not None:
         '''
@@ -293,7 +306,7 @@ def main():
         words = (''.join(i) for i in itertools.product(string.ascii_lowercase, repeat = opts.domain_length))
         for w in words:
             f.write("{0}.{1}\n".format(w, opts.domain))
-        print("++ File domains.txt is ready")
+        fan_print("File domains.txt is ready", 'info')
         exit()
     elif opts.target_string is not None:
         '''
@@ -318,7 +331,7 @@ def main():
             target = get_target()
 
             if target == "2":
-                print("!! invalid user/code OR api is disabled for you")
+                fan_print("invalid user/code OR api is disabled for you")
                 exit()
             elif target == "0":
                 '''NO TARGETS FOUND ON SERVER'''
@@ -330,12 +343,12 @@ def main():
                     xmpp.register_plugin('xep_0199')
                     if xmpp.connect():
                         xmpp.process(block=True)
-                        print("++ xmpp alert sent")
+                        fan_print("xmpp alert sent", 'info')
                     else:
-                        print("!! Unable to connect.")
+                        fan_print("Unable to connect.")
                     xmpp_sent = True
 
-                print("!! no targets found, will try again in 10 minutes")
+                fan_print("no targets found, will try again in 10 minutes", 'info')
                 try:
                     time.sleep(600)
                 except KeyboardInterrupt:
