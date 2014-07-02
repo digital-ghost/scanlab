@@ -15,6 +15,13 @@ api_url = 'http://private.scanlab.project.li/api/'
 # (NMAP still will be running withought TOR!)
 use_tor = False
 
+# Compress big files and save them to archive folder, instead of sending to server
+# Useful option for clients with low RAM
+compress_large = False
+
+# Maximum file size of report to be parsed (bytes)
+max_file_size = 10240000
+
 ##
 #   Jabber notification settings
 ##

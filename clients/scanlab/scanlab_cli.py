@@ -155,6 +155,18 @@ def escape_target(target):
     Parse and send file
 '''
 def parse_and_send(file_name):
+    if compress_large == True:
+        file_size = os.stat(file_name).st_size
+        if file_size > max_file_size:
+            if os.name == "posix":  
+                ark_name = str(int(time.time())) + '.tgz'
+                os.system('tar czfP '+ ark_name + ' ' + file_name)
+                os.system('mv ' + ark_name + ' ' + cwd + 'archive/' + ark_name)
+            else:
+                import shutil
+                shutil.copy(file_name, cwd + str(int(time.time())) + '.xml')
+            return
+
     try:
         xml = ET.parse(file_name).getroot()
     except:
