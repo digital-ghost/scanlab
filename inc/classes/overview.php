@@ -6,12 +6,12 @@
 class Overview extends Scanlab {
     function __construct() {
         parent::__construct();
-        if (!$this->user) redirect(REL_URL."auth/login");
+        if (IS_PRIVATE === true) {
+            if (!$this->user) redirect(REL_URL."auth/login");        
+        }
     }
 
     function GET($matches) {
-        $time_start = microtime(true);
-
         if (USE_WORKER === true) {
             $distinct = $this->db->cache->findOne(array("key" => "distinct_cache"));
             if ($distinct == NULL) {

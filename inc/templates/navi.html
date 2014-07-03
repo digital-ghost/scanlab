@@ -9,9 +9,8 @@
 {% endif %}
 <div class="navi big">
     <nav >
-        <a href="{{ REL_URL }}" class="btn">Home</a> 
         {% if session.logged_in == "true" %}
-            <a title="Select filters for your searches" href="{{ REL_URL }}overview" class="btn">Overview</a>
+            <a title="Select filters for your searches" href="{{ REL_URL }}" class="btn">Overview</a>
             <a title="Your control panel" href="{{ REL_URL }}user/panel" class="btn">Control Panel</a>
             <a href="{{ REL_URL }}auth/logout" class="btn">Logout</a>
         {% else %}
