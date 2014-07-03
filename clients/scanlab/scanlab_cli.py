@@ -11,6 +11,7 @@ import urllib
 import urllib2
 import itertools
 import string
+import subprocess
 import re
 from datetime import datetime
 from hashlib import sha1
@@ -225,6 +226,21 @@ def parse_and_send(file_name):
         i = i + len(reports)
         send_reports(reports, user, auth_hash, i)
 
+
+def nmap_scan(nmap_str):
+    try:
+        subprocess.call(nmap_str, shell=True)
+    except KeyboardInterrupt:
+        fan_print('\n[1] Skip current target.\n[2] Close client.')
+        answer = raw_input('Enter 1 or 2: ')
+        if answer == '1':
+            return
+        else:
+            exit()
+
+    parse_and_send(cwd+"temp.xml")
+    os.system("rm "+cwd+"temp.xml")
+        
 '''
     Scan and send reports
 '''
@@ -236,9 +252,7 @@ def scan_target(target, scanlab_mode):
         nmap_str = "{0} {1} -oX {2}temp.xml {3}".format(nmap_bin, nmap_args, cwd, target)
         # nmap output goes to /dev/null
         if os.name == "posix": nmap_str += " > /dev/null" 
-        os.system(nmap_str)
-        parse_and_send(cwd+"temp.xml")
-        os.system("rm "+cwd+"temp.xml")
+        nmap_scan(nmap_str)
     else:
         '''SCANLAB MODE'''
         for port in sl_ports:
@@ -252,9 +266,7 @@ def scan_target(target, scanlab_mode):
             )
 
             if os.name == "posix": nmap_str += " > /dev/null" 
-            os.system(nmap_str)
-            parse_and_send(cwd+"temp.xml")
-            os.system("rm "+cwd+"temp.xml")
+            nmap_scan(nmap_str)
 
     fan_print("Finished scanning " + target, 'info')
 
