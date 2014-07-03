@@ -5,7 +5,7 @@
 $conf_urls = array(
     "" => "Home",
     "api/(insert|iplist|get_target|xml_export|xml_id|upload_xml)(.*)" => "Api",
-    "overview(|/([a-z]+))" => "Overview",
+    "overview" => "Overview",
     "id/([0-9a-zA-Z]+)" => "Report",
     "search\?(.*)" => "Search",
     "auth(|/([a-z]+))" => "Auth",

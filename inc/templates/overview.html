@@ -1,18 +1,11 @@
 {% include 'header.html' %}
 {% include 'navi.html' %}
 
-<div style="padding: 10px; ">
-    <a class="btn big" href="{{ REL_URL }}overview/services">Services</a>
-    <a class="btn big" href="{{ REL_URL }}overview/ports">Ports</a>
-    <a class="btn big" href="{{ REL_URL }}overview/countries">Countries</a>
-    <a class="btn big" href="{{ REL_URL }}overview/tags">Tags</a>
-</div>
+<div class="big mute center">{{ total_count }} reports in database</div>
+
 {% if not countries and not users and not services and not ports and not tags %}
 <div class="box ">
-    <h1 class="center">Select mode</h1>
-    <div class="center">
-        <img class="center" style="box-shadow: 0px 0px 15px #000; border-radius: 10px;" src="{{REL_URL}}images/network.jpg">
-    </div>
+    <h1 class="center">Nothing to do here</h1>
 </div>
 {% endif %}
 
