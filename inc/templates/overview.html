@@ -9,27 +9,35 @@
 </div>
 {% endif %}
 
-{% if services %} 
+{% if ports %}
 <div class="box">
-    <h1 class="center">Services:</h1>
-    <div>
-        {% for service in services %}
-        <a class="btn small btn-yellow" href="{{ REL_URL }}search?q=service:{{ service.name }}">
-            <b>{{ service.name }} ({{ service.count }})</b>
-        </a>
+    <h1 class="center">Ports:</h1>
+    <div class="center">
+        {% for port in ports %}
+            {% if port.count > 0 %}
+                <a 
+                class="btn {{ port.count > 50 ? '' : 'small'}} {{ port.count > 100 ? 'big' : ''}} btn-green" 
+                href="{{ REL_URL }}search?q=port:{{ port.name }}">
+                    <b>{{ port.name }}</b> ({{ port.count }})
+                </a>
+            {% endif %}
         {% endfor %}
     </div>
 </div>
 {% endif %}
 
-{% if ports %}
+{% if services %} 
 <div class="box">
-    <h1 class="center">Ports:</h1>
-    <div>
-        {% for port in ports %}
-        <a class="btn small btn-green" href="{{ REL_URL }}search?q=port:{{ port.name }}">
-            <b>{{ port.name }} ({{ port.count }})</b>
-        </a>
+    <h1 class="center">Services:</h1>
+    <div class="center">
+        {% for service in services %}
+            {% if service.count > 0 %}
+                <a 
+                class="btn {{ service.count > 50 ? '' : 'small'}} {{ service.count > 100 ? 'big' : ''}} btn-yellow"
+                href="{{ REL_URL }}search?q=service:{{ service.name }}">
+                    <b>{{ service.name }}</b> ({{ service.count }})
+                </a>
+            {% endif %}
         {% endfor %}
     </div>
 </div>
@@ -38,9 +46,11 @@
 {% if countries %}
 <div class="box">
     <h1 class="center">Countries:</h1>
-    <div>
+    <div class="center">
         {% for country in countries %}
-        <a class="btn small" href="{{ REL_URL }}search?q=country:{{country.name}}">
+        <a
+        class="btn {{ country.count > 50 ? '' : 'small'}} {{ country.count > 100 ? 'big' : ''}}"
+        href="{{ REL_URL }}search?q=country:{{country.name}}">
             <img class="flag" src="{{ REL_URL }}images/png/{{ country.name|lower }}.png" title="{{ country.name }}"> ({{country.count}})
         </a>
         {% endfor %}
@@ -51,9 +61,11 @@
 {% if tags %}
 <div class="box">
     <h1 class="center">Tags:</h1>
-    <div>
+    <div class="center">
         {% for tag in tags %}
-        <a class="btn small btn-blue" href="{{ REL_URL }}search?q=tag:{{ tag.name }}">
+        <a 
+        class="btn {{ tag.count > 50 ? '' : 'small'}} {{ tag.count > 100 ? 'big' : ''}} btn-blue" 
+        href="{{ REL_URL }}search?q=tag:{{ tag.name }}">
             <b>{{ tag.name }} ({{tag.count}})</b>
         </a>
         {% endfor %}
