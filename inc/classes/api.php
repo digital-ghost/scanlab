@@ -166,7 +166,8 @@ class Api extends Scanlab {
             libxml_disable_entity_loader(true);
             $xml_string = file_get_contents($_FILES["userfile"]["tmp_name"]);
             if (!$xml_string) showError('Cant read file');
-            if (preg_match('/<!DOCTYPE/i', $xml_string)) showError("XML contains something evil");
+            if (preg_match('/<!DOCTYPE/i', $xml_string)) 
+                $xml_string = preg_replace('/<!DOCTYPE(|[^>]+)>/i', '', $xml_string);
 
             $xml = simplexml_load_string($xml_string);
             if ($xml) {
