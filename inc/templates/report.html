@@ -79,16 +79,24 @@
                     <td>{{ port.state.attributes.state }}</td>
                             <td>
                                 {% if port.service.attributes.name == 'ftp'%}
-                                <a href="{{ port.service.attributes.name }}://{{ host.address.attributes.addr }}:{{ port.attributes.portid }}" class="safe-link-style">
+                                <a 
+                                href="{{ port.service.attributes.name }}://{{ host.address.attributes.addr }}:{{ port.attributes.portid }}" 
+                                class="safe-link-style" target="_blank">
                                     {{ port.service.attributes.name }}
                                 </a>
-                                {% elseif port.service.attributes.name == 'http'
-                                    or port.service.attributes.name == 'http-alt' %}
+                                {% 
+                                elseif port.service.attributes.name == "http" 
+                                or port.service.attributes.name == "http-alt" 
+                                or port.attributes.portid == "8080"
+                                or port.attributes.portid == "81"
+                                %}
                                 <span title="http://{{ host.address.attributes.addr }}:{{ port.attributes.portid }}" class="safe-link safe-link-style">
                                     {{ port.service.attributes.name }}
                                 </span>
-                                {% elseif port.service.attributes.name == 'https'
-                                    or port.service.attributes.name == 'https-alt' %}
+                                {% 
+                                elseif port.service.attributes.name == "https" 
+                                or port.service.attributes.name == "https-alt" 
+                                 %}
                                 <span title="https://{{ host.address.attributes.addr }}:{{ port.attributes.portid }}" class="safe-link safe-link-style">
                                     {{ port.service.attributes.name }}
                                 </span>

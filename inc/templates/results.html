@@ -49,14 +49,16 @@
             {% for port in row.report.ports %}
                 {% if port.state == "open" %}
                     {% if port.service.name == "ftp" %}
-                    <a href="{{ port.service.name}}://{{row.report.address}}:{{port.portid}}">
+                    <a href="{{ port.service.name}}://{{row.report.address}}:{{port.portid}}" 
+                    target="_blank">
                         <span class="port small port-open-link">{{ port.service.name }} ({{ port.portid }})</span>
                     </a>    
-                    {% elseif port.service.name == "http" or port.service.name == "http-alt"%}
+                    {% elseif port.service.name in ["http","http-alt"] 
+                    or port.portid in ["8080", "81"] %}
                     <span class="safe-link" title="http://{{row.report.address}}:{{port.portid}}">
                         <span class="port small port-open-link">{{ port.service.name }} ({{ port.portid }})</span>
                     </span>    
-                    {% elseif port.service.name == "https" or port.service.name == "https-alt"%}
+                    {% elseif port.service.name in ["https","https-alt"] %}
                     <span class="safe-link" title="https://{{row.report.address}}:{{port.portid}}">
                         <span class="port small port-open-link">{{ port.service.name }} ({{ port.portid }})</span>
                     </span>    
