@@ -50,10 +50,10 @@ function queryFromSearchArray($array){
         foreach ($array['words'] as $word) {
             if ($word[0] == "-") {
                 $word = str_replace(array(".", "-"), array("\.", "\-"), substr($word,1));
-                $query['$nor'][] = array("raw_xml" => new MongoRegex('/'.$word.'/'));
+                $query['$nor'][] = array("raw_xml" => new MongoRegex('/'.$word.'/i'));
             } else {
                 $word = str_replace(array(".", "-"), array("\.", "\-"), $word);
-                $query['$and'][] = array("raw_xml" => new MongoRegex('/'.$word.'/'));
+                $query['$and'][] = array("raw_xml" => new MongoRegex('/'.$word.'/i'));
             }
         }
     }
