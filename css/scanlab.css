@@ -219,6 +219,8 @@ pre {
     text-align: center; 
     color: #111;
     background: seashell;
+    transition: background 0.2s ease;
+
 }
 
 .btn:hover {
@@ -313,53 +315,55 @@ form.scanlab-form > fieldset {
     border: none;
 }
 
-form.scanlab-form > fieldset > input, textarea {
+form.scanlab-form input, textarea {
     display: block;
     margin-bottom: 5px;
     padding: 5px;    
 }
 
-form.scanlab-form > fieldset > 
+form.scanlab-form
     input[type="text"], input[type="password"], textarea
 {
 
     border: 1px #111 solid;
     background: #202328;
     color: #ddd;
+    transition: background 0.2s ease, color 0.2s ease;
+
 }
 
-form.scanlab-form > fieldset > 
+form.scanlab-form
     input[type="text"]:focus, input[type="password"]:focus, textarea:focus 
 {
-    transition: background 0.3s ease, color 0.3s ease;
+    transition: background 0.2s ease, color 0.2s ease;
     background: #999;
     color: #111;
 }
 
-form.scanlab-form > fieldset > input[type="submit"]
+form.scanlab-form input[type="submit"]
 {
     display: block;
     margin-bottom: 5px;
     padding: 5px;
 }
 
-form.scanlab-form > fieldset > legend {
+form.scanlab-form legend {
     text-decoration: underline;
 }
 
-form.scanlab-form > fieldset > textarea
+form.scanlab-form textarea
 {
     width: 70%;
     height: 200px;   
 }
 
-form.scanlab-form > fieldset > input.search-input {
+form.scanlab-form input.search-input {
     display: inline;
     font-size: 150%;
     width: 70%;
 }
 
-form.scanlab-form > fieldset > input.search-btn {
+form.scanlab-form input.search-btn {
     display: inline;
     padding: 5px;
     letter-spacing:0;
@@ -374,7 +378,7 @@ form.scanlab-form.inline {
     padding: 0px;
 }
 
-form.scanlab-form.inline > fieldset > input {
+form.scanlab-form.inline input {
     display: inline;
 }
 
