@@ -58,6 +58,15 @@ class Api extends Scanlab {
                     echo genXML($results, true);
                     break;
 
+                case "delete":
+                    $q = getSearchQuery();
+                    $db_query = queryFromSearchArray(queryToArray($q));
+                    $db_query['$and'][] = array("user" => $this->checkLogin());
+
+                    $results = $this->db->reports->remove($db_query);
+                    header('Location: '.$_SERVER['HTTP_REFERER']); 
+                    break;
+
                 case "xml_id":
                     if (isset($_GET['id']) && !empty($_GET['id'])) {
                         $id = (string) $_GET['id'];
