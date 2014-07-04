@@ -60,10 +60,10 @@ class Api extends Scanlab {
 
                 case "delete":
                     $q = getSearchQuery();
-                    $db_query = queryFromSearchArray(queryToArray($q));
-                    $db_query['$and'][] = array("user" => $this->checkLogin());
-
-                    $results = $this->db->reports->remove($db_query);
+                    $search_array = queryToArray($q);
+                    $search_array["user"] = $this->checkLogin();
+                    $db_query = queryFromSearchArray($search_array);
+                    $this->db->reports->remove($db_query);
                     header('Location: '.$_SERVER['HTTP_REFERER']); 
                     break;
 
