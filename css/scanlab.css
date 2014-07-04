@@ -311,29 +311,31 @@ form.scanlab-form {
     padding: 20px;
 }
 
-form.scanlab-form > fieldset {
+form.scanlab-form fieldset {
     border: none;
 }
 
-form.scanlab-form input, textarea {
+form.scanlab-form input,
+form.scanlab-form textarea
+{
     display: block;
     margin-bottom: 5px;
     padding: 5px;    
 }
 
-form.scanlab-form
-    input[type="text"], input[type="password"], textarea
+form.scanlab-form input[type="text"],
+form.scanlab-form input[type="password"],
+form.scanlab-form textarea
 {
-
     border: 1px #111 solid;
     background: #202328;
     color: #ddd;
     transition: background 0.2s ease, color 0.2s ease;
-
 }
 
-form.scanlab-form
-    input[type="text"]:focus, input[type="password"]:focus, textarea:focus 
+form.scanlab-form input[type="text"]:focus,
+form.scanlab-form input[type="password"]:focus,
+form.scanlab-form textarea:focus 
 {
     transition: background 0.2s ease, color 0.2s ease;
     background: #999;
@@ -390,17 +392,21 @@ form.scanlab-form.inline input {
     height: 15px;
 }
 
-.comment {
+.login-box {
+    width: 40%;
+    margin: 0px auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+    width: 100% !important;
     margin-bottom: 10px;
-    padding: 10px;
-    border-bottom: 1px #333 solid;
+    font-size: 20px;
 }
 
-.comment a {
-    font-weight: bold;
-    color: #cccccc;
-}
-
-.comment a:hover {
-    color: #999999;
+.login-box div.center > input {
+    font-size: 20px;
 }

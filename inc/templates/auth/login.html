@@ -1,16 +1,17 @@
 {% include "header.html" %}
 {% include "navi.html" %}
 
-<div class="box">
+<div class="box login-box">
+    <h2>Login form</h2>
     <form class="scanlab-form" action="{{ REL_URL }}auth/login" method="POST">
-        <fieldset>
-            <legend>login here</legend>
-            <input type="text" name="username" placeholder="username">
-            <input type="password" name="password" placeholder="password">
-            <input type="submit" class="btn btn-blue" value="Login">
-            <a class="btn small" href="{{ REL_URL }}auth/register">Registration</a>
-        </fieldset>
+        <input type="text" name="username" placeholder="Username">
+        <input type="password" name="password" placeholder="Password">
+        <div class="center">
+            <input type="submit" class="btn btn-blue" value="Login">        	
+        </div>
     </form>
+    <a class="btn small" href="{{ REL_URL }}auth/register">Registration</a>
+
 </div>
 
 {% include "footer.html" %}

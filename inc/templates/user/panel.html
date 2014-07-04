@@ -7,9 +7,10 @@
             <img class="like-icon" src="{{REL_URL}}images/icons/like.png">
             Favorites
         </a>
-        <a href="mailto:{{ADMIN_EMAIL}}" class="btn">Contact admin</a>
     {% if user.username == ROOT_USER %}
         <a href="{{REL_URL}}root" class="btn">Root panel</a>
+    {% else %}
+        <a href="mailto:{{ADMIN_EMAIL}}" class="btn">Contact admin</a>
     {% endif %}
     </p>
     {% if user.api_key != "1" %}
@@ -38,6 +39,23 @@
         </fieldset>
     </form>
 </div>
+
+<div class="box">
+    <div class="center">
+        <a class="btn " id="open-targets">open targets list</a>
+    </div>
+    <div id="target-form">
+        <form action="{{REL_URL}}user/add_targets" method="POST" class="scanlab-form">
+            <fieldset>
+                <legend>This should be nmap compatible target list. Watch <b>man nmap</b> for more.</legend>
+                <textarea name="targets">{{user.targets}}</textarea>
+                <input type="hidden" name="token" value="{{ session.token }}">
+                <input type="submit" class="btn" value="Save targets">
+            </fieldset>
+        </form>
+    </div>
+</div>
+
 <div class="box">
         <div class="center">
             <a class="btn btn-green big" href="{{REL_URL}}clients/client.tgz">Download client</a>
@@ -80,20 +98,6 @@
             </div>
         </div>
 </div>
-<div class="box">
-    <div class="center">
-        <a class="btn " id="open-targets">open targets list</a>
-    </div>
-    <div id="target-form">
-        <form action="{{REL_URL}}user/add_targets" method="POST" class="scanlab-form">
-            <fieldset>
-                <legend>This should be nmap compatible target list. Watch <b>man nmap</b> for more.</legend>
-                <textarea name="targets">{{user.targets}}</textarea>
-                <input type="hidden" name="token" value="{{ session.token }}">
-                <input type="submit" class="btn" value="Save targets">
-            </fieldset>
-        </form>
-    </div>
-</div>
+
 {% endif %}
 {% include 'footer.html' %}
