@@ -121,4 +121,11 @@ function updateOverviewCache($db) {
     }
 }
 
+function updateUserReportCount($user, $db) {
+    $new_count = $db->reports->find(array('user'=>$user))->count();
+    $db->users->update(
+        array("username" => $user), array('$set' => array("reports_count" => $new_count))
+    );
+}
+
 ?>

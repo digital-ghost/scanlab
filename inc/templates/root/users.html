@@ -11,8 +11,9 @@
             <th>Reports</th>
             <th>Joined at</th>
             <th>Api Key</th>
-            <th>Delete User</th>
-            <th>Delete Reports</th>
+            <th>Del User</th>
+            <th>Del Reports</th>
+            <th>Count Reports</th>
         </tr>
 
     {% for user in users %}
@@ -44,6 +45,9 @@
             </td>
             <td>
                 <span class="btn small del-reports" title="{{user.username}}">Del reports</span>
+            </td>
+            <td>
+                <span class="btn small count-reports" title="{{user.username}}">Recount</span>
             </td>
         </tr>
     {% endfor %}

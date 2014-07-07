@@ -73,6 +73,10 @@ class Root extends Scanlab {
                     $this->delReports();
                     break;
 
+                case "count_reports":
+                    $this->countReports();
+                    break;
+
                 case "update_cache":
                     $this->updateCache();
                     break;
@@ -143,6 +147,21 @@ class Root extends Scanlab {
                 $this->db->users->update(
                     array("username" => $_POST['username']), array('$set' => array("reports_count" => "0"))
                 );
+                die("1");
+            } catch (Exception $e) {
+                die("0");
+            }
+        } else {
+            die("0");
+        }
+    }
+
+    public function countReports() {
+        if (isset($_POST['username']) && !empty($_POST['username'])) {
+            $username = (string) $_POST['username'];
+            if (preg_match('/[^a-z0-9]+/', $username)) die("0");
+            try {
+                updateUserReportCount($username, $this->db);
                 die("1");
             } catch (Exception $e) {
                 die("0");

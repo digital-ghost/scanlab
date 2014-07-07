@@ -181,10 +181,7 @@ class Api extends Scanlab {
             $xml = simplexml_load_string($xml_string);
             if ($xml) {
                 parseUpload($xml, $user, $this->db);
-                $new_count = $this->db->reports->find(array('user'=>$user))->count();
-                $this->db->users->update(
-                    array("username" => $user), array('$set' => array("reports_count" => $new_count))
-                );
+                updateUserReportCount($user, $this->db);
                 redirect(REL_URL.'user/panel');
             } else {
                 showError("You are doing it wrong!");
