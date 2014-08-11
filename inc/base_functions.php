@@ -207,11 +207,12 @@ function checkReport($report, $send_all='false') {
 
 function getTags($report) {
     $sl_tags = array(
-        "camera" => array("ipcam","IPCam", "Ipcam", "netcam", "Netcam", "camera", "Camera", 
-            "CAMERA", "AXIS", "webcamXP", "ATZ", "IQhttpD", "Avtech", "DCS-930L", "D-Link Internet", "WEBCAM"),        
+        "camera"=> array("ipcam","IPCam", "Ipcam", "netcam", "Netcam", "camera", "Camera", "CAMERA",
+            "AXIS", "webcamXP", "ATZ", "IQhttpD", "Avtech", "DCS-930L", "D-Link Internet", "WEBCAM", "Hikvision", "dvr", "DVR", "Dvr",
+            "Surveillance", "surveillace", "SURVEILLANCE"),
         "cisco" => array("cisco", "level_15_access"),
         "anonftp" => array("Anonymous user logged in", "Anonymous access granted", "Anonymous FTP login allowed"),
-        "windows" => array("IIS", "Microsoft Windows"),
+        "windows" => array("Microsoft Windows"),
         "linux" => array("Ubuntu", "Debian", "RHEL"),
         "router" => array("wireless", "ADSL", "DSL Router",
             "TD-W8101G", "admin/1234", "Welcome to ASUS", "OpenWRT", "Linksys", "ZXV10", "NETGEAR","Netgear"),
