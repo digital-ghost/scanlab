@@ -20,10 +20,10 @@ from optparse import OptionParser
 import xml.etree.ElementTree as ET
 
 
-'''
-    Fancy output
-'''
 def fan_print(message, mode='error'):
+    '''
+        Fancy output
+    '''
     c_time = datetime.now().strftime("%d %b %H:%M:%S")
     if mode == 'info':
         print('\033[94m++ {0} {1}\033[0m'.format(c_time, message))
@@ -47,10 +47,10 @@ gi = pygeoip.GeoIP(geoip_file)
 auth_hash = sha1(sha1(code).hexdigest() + salt).hexdigest()
 cwd = os.getcwd() + os.sep()
 
-'''
-    Monkey patch for TOR to work
-'''
 def enable_tor():
+    '''
+        Monkey patch for TOR to work
+    '''
     try:
         import socks
     except:
@@ -67,11 +67,11 @@ def enable_tor():
     
     socket.getaddrinfo = getaddrinfo
 
-'''
-    Return tags found in report
-    This function is very basic at that moment
-'''
 def get_tags(report):
+    '''
+        Return tags found in report
+        This function is very basic at that moment
+    '''
     return_tags = []
     for tag in sl_tags:
         for tag_word in sl_tags[tag]:
@@ -80,10 +80,10 @@ def get_tags(report):
 
     return return_tags
 
-'''
-    Get target from API
-'''
 def get_target():
+    '''
+        Get target from API
+    '''
     params = {
         'code' : auth_hash,
         'user' : user
@@ -97,10 +97,10 @@ def get_target():
         fan_print("Can't connect to server")
         exit()
 
-'''
-    Send reports to server
-'''
 def send_reports(reports, user, auth_hash, i):
+    '''
+        Send reports to server
+    '''
     reports = base64.b64encode(json.dumps(reports))
 
     params = {
@@ -132,10 +132,10 @@ def send_reports(reports, user, auth_hash, i):
     else:
         fan_print(content)
 
-'''
-    Check report if it is junk or not
-'''
 def check_report(report, send_all):
+    '''
+        Check report if it is junk or not
+    '''
     if send_all is True:
         return True
     if report['report']['status'] != 'up':
@@ -145,17 +145,17 @@ def check_report(report, send_all):
             return True
     return False
 
-'''
-    Escape target argument
-'''
 def escape_target(target):
+    '''
+        Escape target argument
+    '''
     p = re.compile('[^a-z0-9.:\-/*]')
     return p.sub('', target)
 
-'''
-    Parse and send file
-'''
 def parse_and_send(file_name):
+    '''
+        Parse and send file
+    '''
     if compress_large == True:
         file_size = os.stat(file_name).st_size
         if file_size > max_file_size:
@@ -228,6 +228,9 @@ def parse_and_send(file_name):
 
 
 def nmap_scan(nmap_str):
+    '''
+        Execute shell command, send and remove report
+    '''
     try:
         subprocess.call(nmap_str, shell=True)
     except KeyboardInterrupt:
@@ -241,10 +244,10 @@ def nmap_scan(nmap_str):
     parse_and_send(cwd+"temp.xml")
     os.remove(cwd+"temp.xml")
         
-'''
-    Scan and send reports
-'''
 def scan_target(target, scanlab_mode):
+    '''
+        Scan and send reports
+    '''
     target = escape_target(target)
     fan_print("Start scanning " + target, 'info')
     if scanlab_mode == False:
@@ -270,9 +273,6 @@ def scan_target(target, scanlab_mode):
 
     fan_print("Finished scanning " + target, 'info')
 
-'''
-    XMPP bot class
-'''
 class SendMsgBot(sleekxmpp.ClientXMPP):
     def __init__(self, jid, password, recipient, message):
         sleekxmpp.ClientXMPP.__init__(self, jid, password)
