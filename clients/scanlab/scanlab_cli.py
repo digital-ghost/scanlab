@@ -50,13 +50,14 @@ cwd = os.getcwd() + os.sep()
 '''
     Monkey patch for TOR to work
 '''
-if use_tor == True:
+def enable_tor():
     try:
         import socks
     except:
-        fan_print("You need to install Socks package !!")
-        fan_print("Do: sudo apt-get install python-socksipy OR sudo pip install PySocks")
+        print("You need to install Socks package !!")
+        print("Do: sudo pip install PySocks")
         sys.exit(-1)
+
     import socket
     socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9050)
     socket.socket = socks.socksocket
@@ -65,7 +66,6 @@ if use_tor == True:
         return [(socket.AF_INET, socket.SOCK_STREAM, 6, '', (args[0], args[1]))]
     
     socket.getaddrinfo = getaddrinfo
-
 
 '''
     Return tags found in report
@@ -289,6 +289,8 @@ class SendMsgBot(sleekxmpp.ClientXMPP):
         self.disconnect(wait=True)
 
 def main():
+    if use_tor == True: enable_tor()
+
     optp = OptionParser(usage="Usage: %prog [options]")
     optp.add_option("-f", "--file", dest="file_name", help="File upload - parse and upload xml file to ScanLab", metavar="FILE")
     optp.add_option("-d", "--remote", action="store_true", dest="remote",
