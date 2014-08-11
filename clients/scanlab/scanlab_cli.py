@@ -45,7 +45,7 @@ except:
 time_begin = time.time()
 gi = pygeoip.GeoIP(geoip_file)
 auth_hash = sha1(sha1(code).hexdigest() + salt).hexdigest()
-cwd = os.getcwd() + "/"
+cwd = os.getcwd() + os.sep()
 
 '''
     Monkey patch for TOR to work
@@ -161,8 +161,8 @@ def parse_and_send(file_name):
         if file_size > max_file_size:
             if os.name == "posix":  
                 ark_name = str(int(time.time())) + '.tgz'
-                os.system('tar czfP '+ ark_name + ' ' + file_name)
-                os.system('mv ' + ark_name + ' ' + cwd + 'archive/' + ark_name)
+                os.system('tar czfP '+ ark_name + ' ' + os.path.relpath(file_name))
+                os.rename(ark_name, cwd + 'archive' + os.sep() + ark_name)
             else:
                 import shutil
                 shutil.copy(file_name, cwd + str(int(time.time())) + '.xml')
@@ -239,7 +239,7 @@ def nmap_scan(nmap_str):
             exit()
 
     parse_and_send(cwd+"temp.xml")
-    os.system("rm "+cwd+"temp.xml")
+    os.remove(cwd+"temp.xml")
         
 '''
     Scan and send reports
