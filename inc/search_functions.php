@@ -19,7 +19,7 @@ function queryToArray($q) {
     $words = preg_grep('/^([a-z0-9A-Z\.\-\_]+)$/', $terms_array); // gets array of simple words
     $ports = preg_grep('/^port:([0-9\,]+)$/', $terms_array); // gets array of port:80,90 etc
     $tags = preg_grep('/^tag:([0-9a-z\,]+)$/', $terms_array); 
-    $countries = preg_grep('/^country:([A-Z\,]+)$/', $terms_array); 
+    $countries = preg_grep('/^country:([A-Z0-9\,]+)$/', $terms_array); 
     $services = preg_grep('/^service:([0-9a-zA-Z,\-:]+)$/', $terms_array); 
     $ips = preg_grep('/^ip:([0-9\.]+)$/', $terms_array); 
     $rated = preg_grep('/^rated:(yes|no)$/', $terms_array); 
