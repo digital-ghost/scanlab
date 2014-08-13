@@ -87,7 +87,7 @@ class User extends Scanlab {
 
     // add to favorites
     private function add_fav(){
-        if (isset($_POST["id"]) && !empty($_POST["id"])) {
+        if ($this->_post("id")) {
             $id = (string) $_POST["id"];
             $report = $this->checkReportId($id);
             $favorites = $this->getUserFavorites();
@@ -103,7 +103,7 @@ class User extends Scanlab {
 
     //delete from favorites
     private function del_fav(){
-        if (isset($_POST["id"]) && !empty($_POST["id"])) {
+        if ($this->_post("id")) {
             $id = (string) $_POST["id"];
             $report = $this->checkReportId($id);
             $favorites = $this->getUserFavorites();
@@ -119,7 +119,7 @@ class User extends Scanlab {
 
     // add or update targets for client
     private function add_targets(){
-        if (isset($_POST['targets']) && !empty($_POST['targets'])) {
+        if ($this->_post('targets')) {
             $targets = (string) $_POST['targets'];
             if (strlen($targets) > 9000) showError("Your target list is over nine thousand");
             try {

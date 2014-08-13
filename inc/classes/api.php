@@ -91,8 +91,7 @@ class Api extends Scanlab {
     function doInsert() {
         if (DISABLE_INSERT === true) exit("Report inserting disabled");
         if (
-            isset($_POST['code']) && isset($_POST['user']) && isset($_POST['reports']) &&
-            !empty($_POST['code']) && !empty($_POST['user']) && !empty($_POST['reports'])
+            $this->_post('code') && $this->_post('user') && $this->_post('reports')
         ) {
             $user = (string) $_POST['user'];
             $hash = (string) $_POST['code'];
@@ -128,7 +127,7 @@ class Api extends Scanlab {
     //get target from db
     private function getTarget() {
         header('Content-Type: text/plain');
-        if (isset($_POST['code']) && isset($_POST['user']) && !empty($_POST['code']) && !empty($_POST['user'])) {
+        if ($this->_post('code') && $this->_post('user')) {
             $hash = (string) $_POST['code'];
             $user = (string) $_POST['user'];
             $user_row = $this->checkAuth($user, $hash, true);

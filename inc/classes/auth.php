@@ -44,10 +44,7 @@ class Auth extends Scanlab {
                     ) {
                         showError("Wrong captcha");
                     }
-                    if (
-                            isset($_POST['username']) && !empty($_POST['username']) 
-                                && isset($_POST['password']) && !empty($_POST['password'])
-                    ) {
+                    if ($this->_post('username') && $this->_post('password')) {
                         $user = (string) $_POST['username'];
                         $pass = (string) $_POST['password'];
                         $this->checkRegister($user, $pass);
@@ -61,10 +58,7 @@ class Auth extends Scanlab {
                     ##
                     #   Login handler
                     ##
-                    if (
-                        isset($_POST['username']) && !empty($_POST['username']) 
-                        && isset($_POST['password']) && !empty($_POST['password'])
-                    ) {
+                    if ($this->_post('username') && $this->_post('password')) {
                         $user = (string) $_POST['username'];
                         $pass = sha1( 
                             sha1((string)$_POST['password']) . AUTH_SALT

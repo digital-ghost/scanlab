@@ -38,6 +38,18 @@ class Scanlab {
          exit();
     }
 
+    public function _post($index = NULL){
+        if ($index === NULL) {
+            return $_POST;
+        } else {
+            if (isset($_POST[$index]) && !empty($_POST[$index])) {
+                return $_POST[$index];
+            } else {
+                return NULL;
+            }
+        }
+    }
+
     // Authenification check (for login and inserting/fetching api)
     public function checkAuth($user, $hash, $return_user="false") {
         if (preg_match("/[^a-z0-9]+/", $user) || strlen($user) < 4 || strlen($user) > 16) 

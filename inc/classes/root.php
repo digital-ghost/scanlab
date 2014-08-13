@@ -45,7 +45,7 @@ class Root extends Scanlab {
     }
 
     function POST(){
-        if (isset($_POST['action']) && !empty($_POST['action'])) {
+        if ($this->_post('action')) {
             $this->checkToken();
             switch ($_POST['action']) {
 
@@ -88,7 +88,7 @@ class Root extends Scanlab {
     }
 
     private function apiChange($value){
-        if (isset($_POST['username']) && !empty($_POST['username'])){
+        if ($this->_post('username')){
             if (preg_match('/[^a-z0-9]+/', $_POST['username'])) return 0;
             try {
                 $this->db->users->update(
@@ -105,7 +105,7 @@ class Root extends Scanlab {
     }
 
     private function updateLimit() {
-        if (isset($_POST['username']) && !empty($_POST['username']) && isset($_POST['limit']) && !empty($_POST['limit'])) {
+        if ($this->_post('username') && $this->_post('limit')) {
             if (preg_match('/[^a-z0-9]+/', $_POST['username'])) redirect(REL_URL.'root/users');
             try {
                 $this->db->users->update(
@@ -122,7 +122,7 @@ class Root extends Scanlab {
     }
 
     public function delUser() {
-        if (isset($_POST['username']) && !empty($_POST['username'])) {
+        if ($this->_post('username')) {
             $username = (string) $_POST['username'];
             if (preg_match('/[^a-z0-9]+/', $username)) die("0");
             try {
@@ -139,7 +139,7 @@ class Root extends Scanlab {
     }
 
     public function delReports() {
-        if (isset($_POST['username']) && !empty($_POST['username'])) {
+        if ($this->_post('username')) {
             $username = (string) $_POST['username'];
             if (preg_match('/[^a-z0-9]+/', $username)) die("0");
             try {
@@ -157,7 +157,7 @@ class Root extends Scanlab {
     }
 
     public function countReports() {
-        if (isset($_POST['username']) && !empty($_POST['username'])) {
+        if ($this->_post('username')) {
             $username = (string) $_POST['username'];
             if (preg_match('/[^a-z0-9]+/', $username)) die("0");
             try {
@@ -172,7 +172,7 @@ class Root extends Scanlab {
     }
 
     private function addUser() {
-        if (isset($_POST['username']) && !empty($_POST['username']) && isset($_POST['password']) && !empty($_POST['password'])) {
+        if ($this->_post('username') && $this->_post('password')) {
             $user = (string) $_POST['username'];
             $pass = (string) $_POST['password'];
             //check unique username
