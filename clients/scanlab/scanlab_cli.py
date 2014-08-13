@@ -45,7 +45,7 @@ except:
 time_begin = time.time()
 gi = pygeoip.GeoIP(geoip_file)
 auth_hash = sha1(sha1(code).hexdigest() + salt).hexdigest()
-cwd = os.getcwd() + os.sep()
+cwd = os.getcwd() + os.sep
 
 def enable_tor():
     '''
