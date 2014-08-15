@@ -14,20 +14,18 @@ class Api extends Scanlab {
         if ( isset($matches[1]) && !empty($matches[1])) {
             $action = (string) $matches[1];
             switch ($action) {
-                    case "login":
-                        $this->apiLogin();
-                        break;
-                    case "insert":
-                        $this->doInsert();
-                        break;
-                    case "get_target":
-                        $this->getTarget();
-                        break;
-                    case "upload_xml":
-                        $this->uploadXML();
-                        break;
-                    default:
-                        die("wtf r u doing");
+                case "login":
+                    $this->apiLogin();
+                    break;
+                case "insert":
+                    $this->doInsert();
+                    break;
+                case "get_target":
+                    $this->getTarget();
+                    break;
+                case "upload_xml":
+                    $this->uploadXML();
+                    break;
             }
         }
     }
@@ -45,7 +43,7 @@ class Api extends Scanlab {
 
                     $results = $this->db->reports->find($db_query)->limit($limit);
                     $this->output('text/plain');
-                    foreach ($results as $row){
+                    foreach ($results as $row) {
                         echo $row['report']['address']."\n";
                     }
                     break;
@@ -77,23 +75,24 @@ class Api extends Scanlab {
                         $this->output('application/octet-stream');
                         header('Content-Disposition: attachment; filename="'.$id.'.xml"'); 
                         echo genXML($result, false);
-                    } else {
-                        showError('fail');
                     }
                     break;
-
-                default:
-                    die('wrong mode');
             }
         } 
+    }
+
+    // check if user can use API
+    private function checkAPI() {
+        session_start();
+        if (!$this->checkLogin()) showError('Unauthorized', false, 401);
+        if (!isset($_SESSION['api_key']) || $_SESSION["api_key"] != "true")
+            showError('API functions are disabled for you', false, 401);
     }
 
     // insert in db
     function doInsert() {
         if (DISABLE_INSERT === true) showError("Report inserting disabled", false);
-        if (
-            $this->_post('code') && $this->_post('user') && $this->_post('reports')
-        ) {
+        if ( $this->_post('code') && $this->_post('user') && $this->_post('reports') ) {
             $user = (string) $_POST['user'];
             $hash = (string) $_POST['code'];
             $reports = (string) $_POST['reports'];
@@ -108,7 +107,7 @@ class Api extends Scanlab {
                 try {
                     $this->db->reports->insert($data);
                 } catch (Exception $e) {
-                    die("Something awful happened");
+                    die("Database error");
                 }
             }
 
@@ -118,10 +117,8 @@ class Api extends Scanlab {
                 ));
                 die("1");
             } catch (Exception $e) {
-                die('AWWW');
+                die('Database error');
             }
-        } else {
-            die('user, code or reports not set');
         }
     } 
 
@@ -145,17 +142,7 @@ class Api extends Scanlab {
                 die("3"); // database error
             }
             echo escapeshellcmd(trim($target));
-        } else {
-            die("code or user is not set");
         }
-    }
-
-    // check if user can use API
-    private function checkAPI() {
-        session_start();
-        if (!$this->checkLogin()) showError('Unauthorized', false, 401);
-        if (!isset($_SESSION['api_key']) || $_SESSION["api_key"] != "true")
-            showError('API functions are disabled for you', false, 401);
     }
 
     // user uploads XML report
@@ -167,14 +154,14 @@ class Api extends Scanlab {
         $user_row = $this->db->users->findOne(array("username" => $user));
 
         if ($user_row['api_key'] !== 1) showError('API is disabled for you!', false, 401);
-        if ($user_row['reports_count'] >= $user_row['account_limit']) showError("Account limit reached");
+        if ($user_row['reports_count'] >= $user_row['account_limit']) showError("Account limit reached", false);
 
         if (isset($_FILES["userfile"]["tmp_name"]) && !empty($_FILES["userfile"]["tmp_name"])) {
-            if ($_FILES["userfile"]["size"] > 10024000) showError("Uploaded file is too large");
+            if ($_FILES["userfile"]["size"] > 10024000) showError("Uploaded file is too large", false);
             libxml_use_internal_errors(true);
             libxml_disable_entity_loader(true);
             $xml_string = file_get_contents($_FILES["userfile"]["tmp_name"]);
-            if (!$xml_string) showError('Cant read file');
+            if (!$xml_string) showError('Cant read file', false);
             if (preg_match('/<!DOCTYPE/i', $xml_string)) 
                 $xml_string = preg_replace('/<!DOCTYPE(|[^>]+)>/i', '', $xml_string);
 
@@ -182,12 +169,14 @@ class Api extends Scanlab {
             if ($xml) {
                 parseUpload($xml, $user, $this->db);
                 updateUserReportCount($user, $this->db);
-                redirect(REL_URL.'user/panel');
+                if ($this->_post("token")) {
+                    redirect(REL_URL.'user/panel');
+                } else {
+                    die("1");
+                }
             } else {
-                showError("You are doing it wrong!");
+                showError('Error: XML parsing failed', false);
             }
-        } else {
-            redirect(REL_URL.'user/panel');
         }
     }
 
