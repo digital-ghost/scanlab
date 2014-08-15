@@ -14,6 +14,9 @@ class Api extends Scanlab {
         if ( isset($matches[1]) && !empty($matches[1])) {
             $action = (string) $matches[1];
             switch ($action) {
+                    case "login":
+                        $this->apiLogin();
+                        break;
                     case "insert":
                         $this->doInsert();
                         break;
@@ -82,8 +85,6 @@ class Api extends Scanlab {
                 default:
                     die('wrong mode');
             }
-        } else {
-            showError("ScanLab is soo cool, huh?");
         } 
     }
 
@@ -152,20 +153,19 @@ class Api extends Scanlab {
     // check if user can use API
     private function checkAPI() {
         session_start();
-        if (!$this->checkLogin()) redirect(REL_URL."auth/login");
+        if (!$this->checkLogin()) showError('Unauthorized', false, 401);
         if (!isset($_SESSION['api_key']) || $_SESSION["api_key"] != "true")
-            showError('You cant use API functions');
+            showError('API functions are disabled for you', false, 401);
     }
 
     // user uploads XML report
     private function uploadXML() {
         session_start();
         $user = $this->checkLogin();
-        if (!$user) redirect(REL_URL."auth/login");
-        $this->checkToken();
+        if (!$user) showError('Unauthorized', false, 401);
         $user_row = $this->db->users->findOne(array("username" => $user));
 
-        if ($user_row['api_key'] !== 1) showError("API is disabled for you!");
+        if ($user_row['api_key'] !== 1) showError('API is disabled for you!', false, 401);
         if ($user_row['reports_count'] >= $user_row['account_limit']) showError("Account limit reached");
 
         if (isset($_FILES["userfile"]["tmp_name"]) && !empty($_FILES["userfile"]["tmp_name"])) {
@@ -188,6 +188,26 @@ class Api extends Scanlab {
         } else {
             redirect(REL_URL.'user/panel');
         }
+    }
+
+    // returns session id for API clients
+    private function apiLogin() {
+        session_start();
+
+        if ($this->_post('user') && $this->_post('code')) {
+            $user = (string) $_POST['user'];
+            $code = (string) $_POST['code'];
+            $curr_user = $this->checkAuth($user, $code, true);
+
+            if ($curr_user && $curr_user["api_key"] == 1) {
+                $this->sessionSetLogin($curr_user, false);
+                $this->output("text/plain");
+                echo session_id();
+            } else {
+                showError("Unauthorized", false, 401);
+            }
+        }
+
     }
 
 }

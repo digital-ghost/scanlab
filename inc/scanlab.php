@@ -74,6 +74,19 @@ class Scanlab {
         }
     }
 
+    // Set session vars when logging in
+    public function sessionSetLogin($user, $browser=true) {
+        $_SESSION["username"] = $user["username"];
+        $_SESSION["logged_in"] = "true";
+
+        if ($user["api_key"] === 1) $_SESSION["api_key"] = "true";
+
+        if ($browser) {
+            $_SESSION["token"] = substr(str_shuffle("abcdefghijklmnopqrstuvwxyz1234567890"), 0, 8);
+            setcookie("sl_login", "true", 0, "/");
+        }
+    }
+
     // Login check (session checks for accessing website)
     public function checkLogin($getuser=true) {
         if ( isset($_SESSION["logged_in"]) && isset($_SESSION["username"])) {

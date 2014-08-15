@@ -3,8 +3,13 @@
 #  Functions for generating HTML
 ##
 
-function showError($error) {
-    require_once('inc/templates/error_page.php');
+function showError($error, $html=true, $error_code=500) {
+    http_response_code($error_code);
+    if ($html) {
+        require_once('inc/templates/error_page.php');
+    } else {
+        echo $error;
+    }
     die();
 }
 

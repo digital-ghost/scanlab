@@ -65,7 +65,7 @@ class Auth extends Scanlab {
                         );
                         $curr_user = $this->checkAuth($user, $pass, true);
                         if ($curr_user) {
-                            $this->login($curr_user);
+                            $this->sessionSetLogin($curr_user);
                             redirect(REL_URL."user/panel");
                         } else {
                             showError("Wrong username/password");
@@ -105,15 +105,6 @@ class Auth extends Scanlab {
         if ($this->db->users->find( array("username" => $user) )->count() > 0)
             showError("username already taken");
         return true;
-    }
-
-    // login session 
-    private function login($user) {
-        $_SESSION["username"] = $user["username"];
-        $_SESSION["logged_in"] = "true";
-        $_SESSION["token"] = substr(str_shuffle("abcdefghijklmnopqrstuvwxyz1234567890"), 0, 8);
-        if ($user["api_key"] == "1") $_SESSION["api_key"] = "true";
-        setcookie("sl_login", "true", 0, "/");
     }
 
     // logout session 
