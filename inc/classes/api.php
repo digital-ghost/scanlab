@@ -90,7 +90,7 @@ class Api extends Scanlab {
 
     // insert in db
     function doInsert() {
-        if (DISABLE_INSERT === true) exit("Report inserting disabled");
+        if (DISABLE_INSERT === true) showError("Report inserting disabled", false);
         if (
             $this->_post('code') && $this->_post('user') && $this->_post('reports')
         ) {
@@ -160,6 +160,7 @@ class Api extends Scanlab {
 
     // user uploads XML report
     private function uploadXML() {
+        if (DISABLE_INSERT === true) showError("Report inserting disabled", false);
         session_start();
         $user = $this->checkLogin();
         if (!$user) showError('Unauthorized', false, 401);
