@@ -41,7 +41,7 @@ class Api extends Scanlab {
                     $limit = 2000;
 
                     $results = $this->db->reports->find($db_query)->limit($limit);
-                    header('Content-Type: text/plain');
+                    $this->output('text/plain');
                     foreach ($results as $row){
                         echo $row['report']['address']."\n";
                     }
@@ -53,7 +53,7 @@ class Api extends Scanlab {
                     $limit = 2000;
 
                     $results = $this->db->reports->find($db_query)->limit($limit);
-                    header('Content-Type: application/octet-stream'); 
+                    $this->output('application/octet-stream');
                     header('Content-Disposition: attachment; filename="reports.xml"'); 
                     echo genXML($results, true);
                     break;
@@ -71,7 +71,7 @@ class Api extends Scanlab {
                     if (isset($_GET['id']) && !empty($_GET['id'])) {
                         $id = (string) $_GET['id'];
                         $result = $this->checkReportId($id);
-                        header('Content-Type: application/octet-stream'); 
+                        $this->output('application/octet-stream');
                         header('Content-Disposition: attachment; filename="'.$id.'.xml"'); 
                         echo genXML($result, false);
                     } else {
@@ -126,7 +126,7 @@ class Api extends Scanlab {
 
     //get target from db
     private function getTarget() {
-        header('Content-Type: text/plain');
+        $this->output('text/plain');
         if ($this->_post('code') && $this->_post('user')) {
             $hash = (string) $_POST['code'];
             $user = (string) $_POST['user'];

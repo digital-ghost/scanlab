@@ -42,7 +42,7 @@ class Rss extends Scanlab {
 					$vars["server_name"] = $this->server_name;
 					$vars["protocol"] = $this->protocol;
 
-					header("Content-Type: application/xml");
+					$this->output('application/xml');
 					$this->view("rss.html", $vars);
 					break;
 				default:

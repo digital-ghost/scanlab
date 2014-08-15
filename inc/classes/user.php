@@ -45,7 +45,7 @@ class User extends Scanlab {
                 case "json_favs":
                     $favs = $this->getUserFavorites();
                     if (empty($favs)) $favs = array("empty");
-                    header("Content-Type: application/json");
+                    $this->output('application/json');
                     echo json_encode($favs);
                     break;
                 default:

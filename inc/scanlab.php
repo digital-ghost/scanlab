@@ -50,6 +50,11 @@ class Scanlab {
         }
     }
 
+    // Set content type
+    public function output($type) {
+        header("Content-Type: ".$type);
+    }
+
     // Authenification check (for login and inserting/fetching api)
     public function checkAuth($user, $hash, $return_user="false") {
         if (preg_match("/[^a-z0-9]+/", $user) || strlen($user) < 4 || strlen($user) > 16) 
