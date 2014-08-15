@@ -59,6 +59,16 @@ class Api extends Scanlab {
                     echo genXML($results, true);
                     break;
 
+                case "json_export":
+                    $q = getSearchQuery();
+                    $db_query = queryFromSearchArray(queryToArray($q));
+                    $limit = 2000;
+
+                    $results = $this->db->reports->find($db_query)->limit($limit);
+                    $this->output('application/json');
+                    echo json_encode(iterator_to_array($results));
+                    break;
+
                 case "delete":
                     $q = getSearchQuery();
                     $search_array = queryToArray($q);
