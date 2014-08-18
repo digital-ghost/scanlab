@@ -11,9 +11,8 @@ class Api extends Scanlab {
     }
 
     function POST($matches) {
-        if ( isset($matches[1]) && !empty($matches[1])) {
-            $action = (string) $matches[1];
-            switch ($action) {
+        if (isset($matches[1]) && !empty($matches[1])) {
+            switch ((string) $matches[1]) {
                 case "login":
                     $this->apiLogin();
                     break;
@@ -32,63 +31,78 @@ class Api extends Scanlab {
 
     function GET($matches) {
         if (isset($matches[1]) && !empty($matches[1])) {
-            //check for api
             $this->checkAPI();
-            $action = (string) $matches[1];
-            switch ($action) {
-                case "iplist":
-                    $q = getSearchQuery();
-                    $db_query = queryFromSearchArray(queryToArray($q));
-                    $limit = 2000;
+            switch ((string) $matches[1]) {
+                case "delete":
+                    $search_array = queryToArray(getSearchQuery());
+                    $search_array["user"] = $this->checkLogin();
+                    $db_query = queryFromSearchArray($search_array);
+                    $this->db->reports->remove($db_query);
+                    if (isset($_SERVER['HTTP_REFERER'])) redirect(REL_URL);
+                    break;
 
-                    $results = $this->db->reports->find($db_query)->limit($limit);
+                case "iplist":
+                    $db_query = queryFromSearchArray(queryToArray(getSearchQuery()));
+                    $results = $this->db->reports->find($db_query)->limit(2000);
                     $this->output('text/plain');
-                    foreach ($results as $row) {
-                        echo $row['report']['address']."\n";
-                    }
+                    foreach ($results as $row) echo $row['report']['address']."\n";
+                    break;
+
+                case "json_export":
+                    $db_query = queryFromSearchArray(queryToArray(getSearchQuery()));
+                    $results = $this->db->reports->find($db_query, array("raw_xml" => false))->limit(2000);
+                    $this->output('application/json');
+                    header('Content-Disposition: attachment; filename="reports.json"'); 
+                    echo json_encode(iterator_to_array($results));
                     break;
 
                 case "xml_export":
-                    $q = getSearchQuery();
-                    $db_query = queryFromSearchArray(queryToArray($q));
-                    $limit = 2000;
-
-                    $results = $this->db->reports->find($db_query)->limit($limit);
-                    $this->output('application/octet-stream');
+                    $db_query = queryFromSearchArray(queryToArray(getSearchQuery()));
+                    $results = $this->db->reports->find($db_query)->limit(2000);
+                    $this->output('text/xml');
                     header('Content-Disposition: attachment; filename="reports.xml"'); 
                     echo genXML($results, true);
                     break;
 
-                case "json_export":
-                    $q = getSearchQuery();
-                    $db_query = queryFromSearchArray(queryToArray($q));
-                    $limit = 2000;
-
-                    $results = $this->db->reports->find($db_query)->limit($limit);
+                case "json_overview":
+                    $distinct = $this->db->cache->findOne(array("key" => "distinct_cache"));
+                    if ($distinct == NULL) showError("No cached version available.", false, 404);
                     $this->output('application/json');
-                    echo json_encode(iterator_to_array($results));
-                    break;
-
-                case "delete":
-                    $q = getSearchQuery();
-                    $search_array = queryToArray($q);
-                    $search_array["user"] = $this->checkLogin();
-                    $db_query = queryFromSearchArray($search_array);
-                    $this->db->reports->remove($db_query);
-                    header('Location: '.$_SERVER['HTTP_REFERER']); 
+                    header('Content-Disposition: attachment; filename="overview.json"'); 
+                    echo json_encode(unserialize($distinct["value"]));
                     break;
 
                 case "xml_id":
                     if (isset($_GET['id']) && !empty($_GET['id'])) {
                         $id = (string) $_GET['id'];
                         $result = $this->checkReportId($id);
-                        $this->output('application/octet-stream');
+                        $this->output('text/xml');
                         header('Content-Disposition: attachment; filename="'.$id.'.xml"'); 
                         echo genXML($result, false);
                     }
                     break;
             }
         } 
+    }
+
+    // returns session id for API clients
+    private function apiLogin() {
+        session_start();
+
+        if ($this->_post('user') && $this->_post('code')) {
+            $user = (string) $_POST['user'];
+            $code = (string) $_POST['code'];
+            $curr_user = $this->checkAuth($user, $code, true);
+
+            if ($curr_user && $curr_user["api_key"] == 1) {
+                $this->sessionSetLogin($curr_user, false);
+                $this->output("text/plain");
+                echo session_id();
+            } else {
+                showError("Unauthorized", false, 401);
+            }
+        }
+
     }
 
     // check if user can use API
@@ -100,7 +114,7 @@ class Api extends Scanlab {
     }
 
     // insert in db
-    function doInsert() {
+    public function doInsert() {
         if (DISABLE_INSERT === true) showError("Report inserting disabled", false);
         if ( $this->_post('code') && $this->_post('user') && $this->_post('reports') ) {
             $user = (string) $_POST['user'];
@@ -147,7 +161,7 @@ class Api extends Scanlab {
             $target = array_pop($targets);
             try {
                 $this->db->users->update(array("username" => $user),
-                    array('$set'=>array('targets'=> implode("\n", $targets))));
+                    array('$set'=>array('targets' => implode("\n", $targets))));
             } catch (Exception $e) {
                 die("3"); // database error
             }
@@ -161,6 +175,7 @@ class Api extends Scanlab {
         session_start();
         $user = $this->checkLogin();
         if (!$user) showError('Unauthorized', false, 401);
+        if (isset($_SERVER['HTTP_REFERER'])) $this->checkToken(); 
         $user_row = $this->db->users->findOne(array("username" => $user));
 
         if ($user_row['api_key'] !== 1) showError('API is disabled for you!', false, 401);
@@ -179,35 +194,11 @@ class Api extends Scanlab {
             if ($xml) {
                 parseUpload($xml, $user, $this->db);
                 updateUserReportCount($user, $this->db);
-                if ($this->_post("token")) {
-                    redirect(REL_URL.'user/panel');
-                } else {
-                    die("1");
-                }
+                if (isset($_SERVER['HTTP_REFERER'])) header('Location: '.$_SERVER['HTTP_REFERER']); 
             } else {
                 showError('Error: XML parsing failed', false);
             }
         }
-    }
-
-    // returns session id for API clients
-    private function apiLogin() {
-        session_start();
-
-        if ($this->_post('user') && $this->_post('code')) {
-            $user = (string) $_POST['user'];
-            $code = (string) $_POST['code'];
-            $curr_user = $this->checkAuth($user, $code, true);
-
-            if ($curr_user && $curr_user["api_key"] == 1) {
-                $this->sessionSetLogin($curr_user, false);
-                $this->output("text/plain");
-                echo session_id();
-            } else {
-                showError("Unauthorized", false, 401);
-            }
-        }
-
     }
 
 }
