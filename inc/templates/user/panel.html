@@ -8,7 +8,7 @@
             Favorites
         </a>
     {% if user.username == ROOT_USER %}
-        <a href="{{REL_URL}}root" class="btn">Root panel</a>
+        <a href="{{REL_URL}}root" class="btn btn-yellow">Root panel</a>
     {% else %}
         <a href="mailto:{{ADMIN_EMAIL}}" class="btn">Contact admin</a>
     {% endif %}
