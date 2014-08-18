@@ -2,15 +2,12 @@
 '''
     ++ Python ScanLab Client v0.2b ++
 '''
-import sys
 import os
 import time
 import base64
 import json
 import urllib
 import urllib2
-import itertools
-import string
 import subprocess
 import re
 from datetime import datetime
@@ -30,20 +27,7 @@ def fan_print(message, mode='error'):
     if mode == 'error':
         print('\033[91m!! {0} {1}\033[0m'.format(c_time, message))
 
-try:
-    import pygeoip
-except:
-    fan_print("You need to install pygeoip package !!\nDo: sudo apt-get install -y python-pip && sudo pip install pygeoip")
-    exit()
-
-try:
-    import sleekxmpp
-except:
-    fan_print("You need to install sleekxmpp package !!\nDo: sudo pip install sleekxmpp")
-    exit()
-
 time_begin = time.time()
-gi = pygeoip.GeoIP(geoip_file)
 auth_hash = sha1(sha1(code).hexdigest() + salt).hexdigest()
 cwd = os.getcwd() + os.sep
 
@@ -56,7 +40,7 @@ def enable_tor():
     except:
         print("You need to install Socks package !!")
         print("Do: sudo pip install PySocks")
-        sys.exit(-1)
+        exit()
 
     import socket
     socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, "127.0.0.1", 9050)
@@ -197,10 +181,11 @@ def parse_and_send(file_name):
 
                 ports_array.append(p)
 
-        country_code = gi.country_code_by_addr(addr)
-        # It must be somwhere in Antarctica
-        if country_code == "":
-            country_code = "AQ"
+        if geoip_enabled == True:
+            country_code = gi.country_code_by_addr(addr)
+            if country_code == "": country_code = "A1"
+        else:
+            country_code = "A1"
 
         report['report'] = {
             'status' : host.find('status').attrib['state'],
@@ -273,23 +258,38 @@ def scan_target(target, scanlab_mode):
 
     fan_print("Finished scanning " + target, 'info')
 
-class SendMsgBot(sleekxmpp.ClientXMPP):
-    def __init__(self, jid, password, recipient, message):
-        sleekxmpp.ClientXMPP.__init__(self, jid, password)
-        self.recipient = recipient
-        self.msg = message
-        self.add_event_handler("session_start", self.start)
-
-    def start(self, event):
-        self.send_presence()
-        self.get_roster()
-        self.send_message(mto=self.recipient,
-                          mbody=self.msg,
-                          mtype='chat')
-        self.disconnect(wait=True)
-
 def main():
     if use_tor == True: enable_tor()
+
+    if geoip_enabled == True:
+        try:
+            import pygeoip
+            global gi
+            gi = pygeoip.GeoIP(geoip_file)
+        except:
+            fan_print("You need to install pygeoip package !!\nDo: sudo apt-get install -y python-pip && sudo pip install pygeoip")
+            exit()
+
+    if xmpp_alerts == True:
+        try:
+            import sleekxmpp
+        except:
+            fan_print("You need to install sleekxmpp package !!\nDo: sudo pip install sleekxmpp")
+            exit()
+
+        class SendMsgBot(sleekxmpp.ClientXMPP):
+            def __init__(self, jid, password, recipient, message):
+                sleekxmpp.ClientXMPP.__init__(self, jid, password)
+                self.recipient = recipient
+                self.msg = message
+                self.add_event_handler("session_start", self.start)
+            def start(self, event):
+                self.send_presence()
+                self.get_roster()
+                self.send_message(mto=self.recipient,
+                                  mbody=self.msg,
+                                  mtype='chat')
+                self.disconnect(wait=True)
 
     optp = OptionParser(usage="Usage: %prog [options]")
     optp.add_option("-f", "--file", dest="file_name", help="File upload - parse and upload xml file to ScanLab", metavar="FILE")
@@ -327,6 +327,8 @@ def main():
         '''
             GENERATE RANDOM DOMAINS
         '''
+        import string
+        import itertools
         out_file = cwd + "domains.txt"
         f = open(out_file, 'w')
         words = (''.join(i) for i in itertools.product(string.ascii_lowercase, repeat = opts.domain_length))

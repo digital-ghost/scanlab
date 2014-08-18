@@ -9,7 +9,11 @@ user = 'admin'
 code = 'letadminin'
 
 # URL to scanlab API
-api_url = 'http://private.scanlab.project.li/api/'
+api_url = 'http://private.scanlab.info.tm/api/'
+
+# Set True if you want to do geoip lookups
+# Will require pygeoip
+geoip_enabled = False
 
 # Set true if you want to do all the requests to ScanLab server with TOR
 # (NMAP still will be running withought TOR!)
