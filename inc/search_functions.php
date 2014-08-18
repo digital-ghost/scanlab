@@ -7,7 +7,7 @@
 function queryToArray($q) {
     $q_array = array(); // array we will return
 
-    $phrases_count = preg_match_all('/"([a-zA-Z0-9\ \.\-\_]+)"/', $q, $phrases); // gets frases "router lol"
+    $phrases_count = preg_match_all('/"([a-zA-Z0-9\ \.\-\_\/:,)(]+)"/', $q, $phrases); // gets frases "router lol"
     // prepare phrases
     if ($phrases_count > 0 && $phrases) {
         $q = str_replace($phrases[0], "", $q); // cut phrases from query string!
@@ -16,7 +16,7 @@ function queryToArray($q) {
 
     $terms_array = preg_split('/ /', $q); // get array of other terms
 
-    $words = preg_grep('/^([a-z0-9A-Z\.\-\_]+)$/', $terms_array); // gets array of simple words
+    $words = preg_grep('/^([a-zA-Z0-9\.\-\_\/,)(]+)$/', $terms_array); // gets array of simple words
     $ports = preg_grep('/^port:([0-9\,]+)$/', $terms_array); // gets array of port:80,90 etc
     $tags = preg_grep('/^tag:([0-9a-z\,]+)$/', $terms_array); 
     $countries = preg_grep('/^country:([A-Z0-9\,]+)$/', $terms_array); 

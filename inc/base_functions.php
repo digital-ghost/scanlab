@@ -69,7 +69,7 @@ function getPage() {
 function getSearchQuery() {
     if (isset($_GET['q']) && !empty($_GET['q'])) {
         $q = urldecode( (string) $_GET['q'] );
-        if (preg_match('/[^0-9a-zA-Z\ \:\-\"\,\.\_]+/', $q)) showError('illegal characters in your query');
+        if (preg_match('/[^0-9a-zA-Z\ \:\-\"\,\.\_\/\)\(]+/', $q)) showError('illegal characters in your query');
         if (strlen($q) < 3 || strlen($q) > 140) showError('Search query must be from 3 to 140 symbols.');
         return $q;
     } else {
