@@ -56,6 +56,6 @@ define('PROMO_MODE', false);
 // Advert. Set to false if you don't want to use it.
 define('SL_ADVERT', false);
 
-define('SL_VERSION', '1.0 beta');
+define('SL_VERSION', '1.0');
 
 ?>
