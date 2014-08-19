@@ -66,7 +66,7 @@ class Twig_Compiler implements Twig_CompilerInterface
      * Compiles a node.
      *
      * @param Twig_NodeInterface $node        The node to compile
-     * @param integer            $indentation The current indentation
+     * @param int                $indentation The current indentation
      *
      * @return Twig_Compiler The current compiler instance
      */
@@ -208,7 +208,7 @@ class Twig_Compiler implements Twig_CompilerInterface
     public function addDebugInfo(Twig_NodeInterface $node)
     {
         if ($node->getLine() != $this->lastLine) {
-            $this->write("// line {$node->getLine()}\n");
+            $this->write(sprintf("// line %d\n", $node->getLine()));
 
             // when mbstring.func_overload is set to 2
             // mb_substr_count() replaces substr_count()
@@ -236,7 +236,7 @@ class Twig_Compiler implements Twig_CompilerInterface
     /**
      * Indents the generated code.
      *
-     * @param integer $step The number of indentation to add
+     * @param int     $step The number of indentation to add
      *
      * @return Twig_Compiler The current compiler instance
      */
@@ -250,7 +250,7 @@ class Twig_Compiler implements Twig_CompilerInterface
     /**
      * Outdents the generated code.
      *
-     * @param integer $step The number of indentation to remove
+     * @param int     $step The number of indentation to remove
      *
      * @return Twig_Compiler The current compiler instance
      *
